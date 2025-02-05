@@ -1,38 +1,90 @@
 package com.viktormykhailiv.compose.hints
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.AppBarDefaults
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationDefaults
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        val hints = remember { Hints().execute() }
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                Column(
-                    Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    windowInsets = AppBarDefaults.topAppBarWindowInsets,
+                    title = {
+                        Text("TopAppBar")
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(
+                                Icons.Filled.Search,
+                                contentDescription = "Localized description",
+                            )
+                        }
+                    }
+                )
+            },
+            bottomBar = {
+                BottomNavigation(
+                    windowInsets = BottomNavigationDefaults.windowInsets,
                 ) {
-                    Text("Compose $hints")
+                    listOf(
+                        "Home" to Icons.Filled.Home,
+                        "Favourite" to Icons.Outlined.Favorite,
+                        "Settings" to Icons.Outlined.Settings,
+                    ).forEachIndexed { index, (title, icon) ->
+                        BottomNavigationItem(
+                            icon = { Icon(icon, contentDescription = null) },
+                            label = { Text(title) },
+                            selected = index == 0,
+                            onClick = {},
+                        )
+                    }
                 }
             }
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Button(onClick = {}) {
+                    Text("Action")
+                }
+            }
+        }
+
+        CompositionLocalProvider(
+            LocalHintOverlayBrush provides Brush.linearGradient(
+                listOf(
+                    Color.Red.copy(alpha = 0.5f),
+                    Color.Blue.copy(alpha = 0.5f),
+                )
+            ),
+        ) {
+            HintOverlay()
         }
     }
 }
