@@ -2,6 +2,7 @@ package com.viktormykhailiv.compose.hints
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationDefaults
@@ -24,11 +25,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
+    val topAppBarActionHintAnchor = rememberHintAnchorState()
+    val actionHintAnchor = rememberHintAnchorState()
+    val bottomNavigationHintAnchor = rememberHintAnchorState()
+
     MaterialTheme {
         Scaffold(
             topBar = {
@@ -38,7 +44,11 @@ fun App() {
                         Text("TopAppBar")
                     },
                     actions = {
-                        IconButton(onClick = {}) {
+                        IconButton(
+                            modifier = Modifier
+                                .hintAnchor(topAppBarActionHintAnchor),
+                            onClick = {},
+                        ) {
                             Icon(
                                 Icons.Filled.Search,
                                 contentDescription = "Localized description",
@@ -57,6 +67,11 @@ fun App() {
                         "Settings" to Icons.Outlined.Settings,
                     ).forEachIndexed { index, (title, icon) ->
                         BottomNavigationItem(
+                            modifier = if (index == 0) {
+                                Modifier.hintAnchor(bottomNavigationHintAnchor)
+                            } else {
+                                Modifier
+                            },
                             icon = { Icon(icon, contentDescription = null) },
                             label = { Text(title) },
                             selected = index == 0,
@@ -70,7 +85,12 @@ fun App() {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
-                Button(onClick = {}) {
+                Button(
+                    modifier = Modifier
+                        .hintAnchor(actionHintAnchor)
+                        .padding(4.dp),
+                    onClick = {},
+                ) {
                     Text("Action")
                 }
             }
@@ -79,12 +99,20 @@ fun App() {
         CompositionLocalProvider(
             LocalHintOverlayBrush provides Brush.linearGradient(
                 listOf(
-                    Color.Red.copy(alpha = 0.5f),
                     Color.Blue.copy(alpha = 0.5f),
+                    Color.Red.copy(alpha = 0.5f),
                 )
             ),
         ) {
-            HintOverlay()
+            HintOverlay(
+                anchors = {
+                    listOf(
+                        topAppBarActionHintAnchor,
+                        actionHintAnchor,
+                        bottomNavigationHintAnchor,
+                    )
+                },
+            )
         }
     }
 }
