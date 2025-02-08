@@ -3,6 +3,8 @@ package com.viktormykhailiv.compose.hints
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationDefaults
@@ -46,7 +48,7 @@ fun App() {
                     actions = {
                         IconButton(
                             modifier = Modifier
-                                .hintAnchor(topAppBarActionHintAnchor),
+                                .hintAnchor(topAppBarActionHintAnchor, CircleShape),
                             onClick = {},
                         ) {
                             Icon(
@@ -68,7 +70,10 @@ fun App() {
                     ).forEachIndexed { index, (title, icon) ->
                         BottomNavigationItem(
                             modifier = if (index == 0) {
-                                Modifier.hintAnchor(bottomNavigationHintAnchor)
+                                Modifier.hintAnchor(
+                                    bottomNavigationHintAnchor,
+                                    shape = RoundedCornerShape(50f),
+                                )
                             } else {
                                 Modifier
                             },
@@ -87,7 +92,7 @@ fun App() {
             ) {
                 Button(
                     modifier = Modifier
-                        .hintAnchor(actionHintAnchor)
+                        .hintAnchor(actionHintAnchor, RoundedCornerShape(16.dp))
                         .padding(4.dp),
                     onClick = {},
                 ) {
