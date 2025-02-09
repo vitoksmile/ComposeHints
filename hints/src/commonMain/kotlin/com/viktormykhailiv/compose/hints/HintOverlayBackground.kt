@@ -23,7 +23,7 @@ val LocalHintOverlayBrush = staticCompositionLocalOf<Brush?> { null }
  * Set `background` either from [LocalHintOverlayBrush] or from [LocalHintOverlayColor].
  */
 internal fun Modifier.overlayBackground(
-    anchors: () -> List<HintAnchorState>,
+    anchors: List<HintAnchorState>,
 ): Modifier = composed {
     val backgroundBrush = LocalHintOverlayBrush.current
     val backgroundColor = LocalHintOverlayColor.current
@@ -40,7 +40,7 @@ internal fun Modifier.overlayBackground(
             close()
         }
 
-        anchors().forEach { anchor ->
+        anchors.forEach { anchor ->
             // Prepare path for the anchor
             val anchorPath = Path()
             anchorPath.addOutline(

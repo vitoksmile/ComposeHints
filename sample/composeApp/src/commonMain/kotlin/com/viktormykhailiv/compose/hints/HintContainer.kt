@@ -22,7 +22,7 @@ fun rememberHintContainer(content: @Composable () -> Unit): Hint {
     return rememberHint {
         Box(
             modifier = Modifier
-                .padding(top = 8.dp)
+                .padding(vertical = 8.dp)
                 .background(Color.Yellow, shape = RoundedCornerShape(16.dp))
                 .padding(16.dp),
         ) {
