@@ -19,7 +19,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 
 @Stable
-class HintAnchorState internal constructor() {
+class HintAnchorState internal constructor(
+    internal val hint: Hint,
+) {
 
     internal var size: IntSize by mutableStateOf(IntSize.Zero)
 
@@ -29,8 +31,10 @@ class HintAnchorState internal constructor() {
 }
 
 @Composable
-fun rememberHintAnchorState(): HintAnchorState {
-    return remember { HintAnchorState() }
+fun rememberHintAnchorState(hint: Hint): HintAnchorState {
+    return remember(hint) {
+        HintAnchorState(hint)
+    }
 }
 
 /**
