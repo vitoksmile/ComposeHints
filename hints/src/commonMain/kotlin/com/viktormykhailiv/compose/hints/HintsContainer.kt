@@ -2,6 +2,7 @@
 
 package com.viktormykhailiv.compose.hints
 
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
@@ -13,12 +14,19 @@ import androidx.compose.ui.layout.Layout
 internal fun HintsContainer(
     modifier: Modifier,
     anchors: () -> List<HintAnchorState>,
+    onDismiss: () -> Unit,
 ) {
     val anchors = anchors()
 
     Layout(
         modifier = modifier
-            .overlayBackground(anchors),
+            .overlayBackground(anchors)
+            .clickable(
+                interactionSource = null,
+                // Disable ripple
+                indication = null,
+                onClick = onDismiss,
+            ),
         content = {
             anchors.forEach { it.hint.content() }
         },

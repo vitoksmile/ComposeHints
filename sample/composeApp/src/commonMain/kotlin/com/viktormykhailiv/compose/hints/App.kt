@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -59,6 +58,15 @@ fun App() {
     }
     val bottomNavigationHintAnchor = rememberHintAnchorState(bottomNavigationHint)
 
+    val hintController = rememberHintController(
+        overlay = Brush.linearGradient(
+            listOf(
+                Color.Blue.copy(alpha = 0.5f),
+                Color.Red.copy(alpha = 0.5f),
+            )
+        )
+    )
+
     MaterialTheme {
         Scaffold(
             topBar = {
@@ -71,7 +79,9 @@ fun App() {
                         IconButton(
                             modifier = Modifier
                                 .hintAnchor(topAppBarActionHintAnchor, CircleShape),
-                            onClick = {},
+                            onClick = {
+                                hintController.show(topAppBarActionHintAnchor)
+                            },
                         ) {
                             Icon(
                                 Icons.Filled.Search,
@@ -101,8 +111,12 @@ fun App() {
                             },
                             icon = { Icon(icon, contentDescription = null) },
                             label = { Text(title) },
-                            selected = index == 0,
-                            onClick = {},
+                            selected = index == 1,
+                            onClick = {
+                                if (index == 0) {
+                                    hintController.show(bottomNavigationHintAnchor)
+                                }
+                            },
                         )
                     }
                 }
@@ -116,30 +130,13 @@ fun App() {
                     modifier = Modifier
                         .hintAnchor(actionHintAnchor, RoundedCornerShape(16.dp))
                         .padding(4.dp),
-                    onClick = {},
+                    onClick = {
+                        hintController.show(actionHintAnchor)
+                    },
                 ) {
                     Text("Action")
                 }
             }
-        }
-
-        CompositionLocalProvider(
-            LocalHintOverlayBrush provides Brush.linearGradient(
-                listOf(
-                    Color.Blue.copy(alpha = 0.5f),
-                    Color.Red.copy(alpha = 0.5f),
-                )
-            ),
-        ) {
-            HintOverlay(
-                anchors = {
-                    listOf(
-                        topAppBarActionHintAnchor,
-                        actionHintAnchor,
-                        bottomNavigationHintAnchor,
-                    )
-                },
-            )
         }
     }
 }

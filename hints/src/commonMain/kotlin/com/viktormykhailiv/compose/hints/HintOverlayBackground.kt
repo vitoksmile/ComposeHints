@@ -15,7 +15,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.toSize
 
-val LocalHintOverlayColor = staticCompositionLocalOf<Color> { Color(0x44000000) }
+internal val HintOverlayColorDefault: Color = Color(0x44000000)
+
+val LocalHintOverlayColor = staticCompositionLocalOf<Color> { HintOverlayColorDefault }
 
 val LocalHintOverlayBrush = staticCompositionLocalOf<Brush?> { null }
 
