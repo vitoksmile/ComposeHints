@@ -27,18 +27,34 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
+    val coroutineScope = rememberCoroutineScope()
+    val hintController = rememberHintController(
+        overlay = Brush.linearGradient(
+            listOf(
+                Color.Blue.copy(alpha = 0.5f),
+                Color.Red.copy(alpha = 0.5f),
+            )
+        )
+    )
+
     val topAppBarHint = rememberHintContainer {
-        OutlinedButton(onClick = {}) { Text("Hint for TopAppBar") }
+        OutlinedButton(
+            onClick = {
+                hintController.dismiss()
+            }
+        ) { Text("Hint for TopAppBar") }
     }
     val topAppBarActionHintAnchor = rememberHintAnchorState(topAppBarHint)
 
@@ -58,15 +74,6 @@ fun App() {
     }
     val bottomNavigationHintAnchor = rememberHintAnchorState(bottomNavigationHint)
 
-    val hintController = rememberHintController(
-        overlay = Brush.linearGradient(
-            listOf(
-                Color.Blue.copy(alpha = 0.5f),
-                Color.Red.copy(alpha = 0.5f),
-            )
-        )
-    )
-
     MaterialTheme {
         Scaffold(
             topBar = {
@@ -80,7 +87,9 @@ fun App() {
                             modifier = Modifier
                                 .hintAnchor(topAppBarActionHintAnchor, CircleShape),
                             onClick = {
-                                hintController.show(topAppBarActionHintAnchor)
+                                coroutineScope.launch {
+                                    hintController.show(topAppBarActionHintAnchor)
+                                }
                             },
                         ) {
                             Icon(
@@ -114,7 +123,9 @@ fun App() {
                             selected = index == 1,
                             onClick = {
                                 if (index == 0) {
-                                    hintController.show(bottomNavigationHintAnchor)
+                                    coroutineScope.launch {
+                                        hintController.show(bottomNavigationHintAnchor)
+                                    }
                                 }
                             },
                         )
@@ -131,7 +142,13 @@ fun App() {
                         .hintAnchor(actionHintAnchor, RoundedCornerShape(16.dp))
                         .padding(4.dp),
                     onClick = {
-                        hintController.show(actionHintAnchor)
+                        coroutineScope.launch {
+                            hintController.show(
+                                topAppBarActionHintAnchor,
+                                actionHintAnchor,
+                                bottomNavigationHintAnchor,
+                            )
+                        }
                     },
                 ) {
                     Text("Action")
