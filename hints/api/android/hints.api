@@ -1,0 +1,42 @@
+public final class com/viktormykhailiv/compose/hints/ComposableSingletons$HintKt {
+	public static final field INSTANCE Lcom/viktormykhailiv/compose/hints/ComposableSingletons$HintKt;
+	public fun <init> ()V
+	public final fun getLambda-1$hints_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/viktormykhailiv/compose/hints/Hint {
+	public static final field $stable I
+}
+
+public final class com/viktormykhailiv/compose/hints/HintAnchorKt {
+	public static final fun hintAnchor (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun hintAnchor$default (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun rememberHintAnchorState (Lcom/viktormykhailiv/compose/hints/Hint;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/HintAnchorState;
+}
+
+public final class com/viktormykhailiv/compose/hints/HintAnchorState {
+	public static final field $stable I
+}
+
+public final class com/viktormykhailiv/compose/hints/HintController {
+	public static final field $stable I
+	public final fun dismiss ()V
+	public final fun show (Lcom/viktormykhailiv/compose/hints/HintAnchorState;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun show (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun show ([Lcom/viktormykhailiv/compose/hints/HintAnchorState;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/viktormykhailiv/compose/hints/HintControllerKt {
+	public static final fun rememberHintController (Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/HintController;
+	public static final fun rememberHintController-Iv8Zu3U (JLandroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
+}
+
+public final class com/viktormykhailiv/compose/hints/HintKt {
+	public static final fun rememberHint (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/Hint;
+}
+
+public final class com/viktormykhailiv/compose/hints/HintOverlayBackgroundKt {
+	public static final fun getLocalHintOverlayBrush ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalHintOverlayColor ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+

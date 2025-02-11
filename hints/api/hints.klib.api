@@ -1,0 +1,35 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <ComposeHints:hints>
+final class com.viktormykhailiv.compose.hints/Hint // com.viktormykhailiv.compose.hints/Hint|null[0]
+
+final class com.viktormykhailiv.compose.hints/HintAnchorState // com.viktormykhailiv.compose.hints/HintAnchorState|null[0]
+
+final class com.viktormykhailiv.compose.hints/HintController { // com.viktormykhailiv.compose.hints/HintController|null[0]
+    final fun dismiss() // com.viktormykhailiv.compose.hints/HintController.dismiss|dismiss(){}[0]
+    final suspend fun show(com.viktormykhailiv.compose.hints/HintAnchorState) // com.viktormykhailiv.compose.hints/HintController.show|show(com.viktormykhailiv.compose.hints.HintAnchorState){}[0]
+    final suspend fun show(kotlin.collections/List<com.viktormykhailiv.compose.hints/HintAnchorState>) // com.viktormykhailiv.compose.hints/HintController.show|show(kotlin.collections.List<com.viktormykhailiv.compose.hints.HintAnchorState>){}[0]
+    final suspend fun show(kotlin/Array<out com.viktormykhailiv.compose.hints/HintAnchorState>...) // com.viktormykhailiv.compose.hints/HintController.show|show(kotlin.Array<out|com.viktormykhailiv.compose.hints.HintAnchorState>...){}[0]
+}
+
+final val com.viktormykhailiv.compose.hints/LocalHintOverlayBrush // com.viktormykhailiv.compose.hints/LocalHintOverlayBrush|{}LocalHintOverlayBrush[0]
+    final fun <get-LocalHintOverlayBrush>(): androidx.compose.runtime/ProvidableCompositionLocal<androidx.compose.ui.graphics/Brush?> // com.viktormykhailiv.compose.hints/LocalHintOverlayBrush.<get-LocalHintOverlayBrush>|<get-LocalHintOverlayBrush>(){}[0]
+final val com.viktormykhailiv.compose.hints/LocalHintOverlayColor // com.viktormykhailiv.compose.hints/LocalHintOverlayColor|{}LocalHintOverlayColor[0]
+    final fun <get-LocalHintOverlayColor>(): androidx.compose.runtime/ProvidableCompositionLocal<androidx.compose.ui.graphics/Color> // com.viktormykhailiv.compose.hints/LocalHintOverlayColor.<get-LocalHintOverlayColor>|<get-LocalHintOverlayColor>(){}[0]
+final val com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_Hint$stableprop // com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_Hint$stableprop|#static{}com_viktormykhailiv_compose_hints_Hint$stableprop[0]
+final val com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_HintAnchorState$stableprop // com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_HintAnchorState$stableprop|#static{}com_viktormykhailiv_compose_hints_HintAnchorState$stableprop[0]
+final val com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_HintController$stableprop // com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_HintController$stableprop|#static{}com_viktormykhailiv_compose_hints_HintController$stableprop[0]
+
+final fun (androidx.compose.ui/Modifier).com.viktormykhailiv.compose.hints/hintAnchor(com.viktormykhailiv.compose.hints/HintAnchorState, androidx.compose.ui.graphics/Shape = ...): androidx.compose.ui/Modifier // com.viktormykhailiv.compose.hints/hintAnchor|hintAnchor@androidx.compose.ui.Modifier(com.viktormykhailiv.compose.hints.HintAnchorState;androidx.compose.ui.graphics.Shape){}[0]
+final fun com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_Hint$stableprop_getter(): kotlin/Int // com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_Hint$stableprop_getter|com_viktormykhailiv_compose_hints_Hint$stableprop_getter(){}[0]
+final fun com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_HintAnchorState$stableprop_getter(): kotlin/Int // com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_HintAnchorState$stableprop_getter|com_viktormykhailiv_compose_hints_HintAnchorState$stableprop_getter(){}[0]
+final fun com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_HintController$stableprop_getter(): kotlin/Int // com.viktormykhailiv.compose.hints/com_viktormykhailiv_compose_hints_HintController$stableprop_getter|com_viktormykhailiv_compose_hints_HintController$stableprop_getter(){}[0]
+final fun com.viktormykhailiv.compose.hints/rememberHint(kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int): com.viktormykhailiv.compose.hints/Hint // com.viktormykhailiv.compose.hints/rememberHint|rememberHint(kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.viktormykhailiv.compose.hints/rememberHintAnchorState(com.viktormykhailiv.compose.hints/Hint, androidx.compose.runtime/Composer?, kotlin/Int): com.viktormykhailiv.compose.hints/HintAnchorState // com.viktormykhailiv.compose.hints/rememberHintAnchorState|rememberHintAnchorState(com.viktormykhailiv.compose.hints.Hint;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.viktormykhailiv.compose.hints/rememberHintController(androidx.compose.ui.graphics/Brush, androidx.compose.runtime/Composer?, kotlin/Int): com.viktormykhailiv.compose.hints/HintController // com.viktormykhailiv.compose.hints/rememberHintController|rememberHintController(androidx.compose.ui.graphics.Brush;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.viktormykhailiv.compose.hints/rememberHintController(androidx.compose.ui.graphics/Color, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.viktormykhailiv.compose.hints/HintController // com.viktormykhailiv.compose.hints/rememberHintController|rememberHintController(androidx.compose.ui.graphics.Color;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
