@@ -14,7 +14,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 
@@ -51,7 +51,7 @@ fun Modifier.hintAnchor(
     state.shape = shape
     onGloballyPositioned {
         state.size = it.size
-        state.offset = it.positionInWindow()
+        state.offset = it.positionInRoot()
             // To fix WindowInsets for iOS and Android
             .minus(Offset(x = 0f, y = statusBarInsets))
     }
