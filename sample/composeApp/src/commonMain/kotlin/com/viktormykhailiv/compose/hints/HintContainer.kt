@@ -28,8 +28,8 @@ fun rememberHintContainer(content: @Composable () -> Unit): Hint {
         Box(
             modifier = Modifier
                 .animateEnterExit(
-                    enter = fadeIn(tween(1_000)) + scaleIn(tween(1_000)),
-                    exit = fadeOut(tween(1_000)) + scaleOut(tween(1_000))
+                    enter = fadeIn(tween(500)) + scaleIn(tween(500)),
+                    exit = fadeOut(tween(500)) + scaleOut(tween(500))
                 )
                 .padding(vertical = 8.dp)
                 .background(Color.Yellow, shape = RoundedCornerShape(16.dp))

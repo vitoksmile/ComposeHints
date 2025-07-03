@@ -24,7 +24,7 @@ First add the dependency to your project:
 
 ```toml
 [versions]
-hints = "1.1.0"
+hints = "1.1.1"
 
 [libraries]
 health = { module = "com.viktormykhailiv:compose-hints", version.ref = "hints" }
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.viktormykhailiv:compose-hints:1.1.0")
+    implementation("com.viktormykhailiv:compose-hints:1.1.1")
 }
 ```
 
@@ -185,6 +185,28 @@ val hint = rememberHint {
         text = "Hello World",
     )
 }
+```
+
+### Anchor size animation
+
+By default hint's anchor clips overlay with [scale animation](https://youtu.be/C245qYbB_w4). 
+The animation mode and specs can be customized.
+
+```kotlin
+val hintController = rememberHintController(
+    anchorAnimationMode = HintAnchorAnimationMode.Scale,
+    anchorSizeAnimationSpec = tween(durationMillis = 1_000),
+    anchorOffsetAnimationSpec = tween(durationMillis = 1_000),
+)
+```
+
+You can apply ["follow" animation mode](https://youtu.be/EyLt7emss1w) in which anchor's position is animated from the 
+previous to next (moving anchor's rect on the screen).
+
+```kotlin
+val hintController = rememberHintController(
+    anchorAnimationMode = HintAnchorAnimationMode.Follow,
+)
 ```
 
 ### Clip shape

@@ -4,6 +4,7 @@ package com.viktormykhailiv.compose.hints
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidedValue
@@ -13,6 +14,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import kotlin.coroutines.Continuation
@@ -96,11 +99,17 @@ fun rememberHintController(
     overlay: Brush,
     overlayEnterTransition: EnterTransition = HintAnimationDefaults.enterTransition(),
     overlayExitTransition: ExitTransition = HintAnimationDefaults.exitTransition(),
+    anchorAnimationMode: HintAnchorAnimationMode = HintAnimationDefaults.anchorAnimationMode(),
+    anchorSizeAnimationSpec: AnimationSpec<Size> = HintAnimationDefaults.anchorSizeAnimationSpec(),
+    anchorOffsetAnimationSpec: AnimationSpec<Offset> = HintAnimationDefaults.anchorOffsetAnimationSpec()
 ): HintController {
     return rememberHintController(
         overlay = LocalHintOverlayBrush provides overlay,
         overlayEnterTransition = overlayEnterTransition,
         overlayExitTransition = overlayExitTransition,
+        anchorAnimationMode = anchorAnimationMode,
+        anchorSizeAnimationSpec = anchorSizeAnimationSpec,
+        anchorOffsetAnimationSpec = anchorOffsetAnimationSpec,
     )
 }
 
@@ -109,11 +118,17 @@ fun rememberHintController(
     overlay: Color = HintOverlayColorDefault,
     overlayEnterTransition: EnterTransition = HintAnimationDefaults.enterTransition(),
     overlayExitTransition: ExitTransition = HintAnimationDefaults.exitTransition(),
+    anchorAnimationMode: HintAnchorAnimationMode = HintAnimationDefaults.anchorAnimationMode(),
+    anchorSizeAnimationSpec: AnimationSpec<Size> = HintAnimationDefaults.anchorSizeAnimationSpec(),
+    anchorOffsetAnimationSpec: AnimationSpec<Offset> = HintAnimationDefaults.anchorOffsetAnimationSpec(),
 ): HintController {
     return rememberHintController(
         overlay = LocalHintOverlayColor provides overlay,
         overlayEnterTransition = overlayEnterTransition,
         overlayExitTransition = overlayExitTransition,
+        anchorAnimationMode = anchorAnimationMode,
+        anchorSizeAnimationSpec = anchorSizeAnimationSpec,
+        anchorOffsetAnimationSpec = anchorOffsetAnimationSpec,
     )
 }
 
@@ -122,6 +137,9 @@ private fun rememberHintController(
     overlay: ProvidedValue<*>,
     overlayEnterTransition: EnterTransition,
     overlayExitTransition: ExitTransition,
+    anchorAnimationMode: HintAnchorAnimationMode,
+    anchorSizeAnimationSpec: AnimationSpec<Size>,
+    anchorOffsetAnimationSpec: AnimationSpec<Offset>,
 ): HintController {
     val controller = remember { HintController() }
 
@@ -129,6 +147,9 @@ private fun rememberHintController(
         overlay,
         LocalHintOverlayEnterTransition provides overlayEnterTransition,
         LocalHintOverlayExitTransition provides overlayExitTransition,
+        LocalAnchorAnimationMode provides anchorAnimationMode,
+        LocalAnchorSizeAnimationSpec provides anchorSizeAnimationSpec,
+        LocalAnchorOffsetAnimationSpec provides anchorOffsetAnimationSpec,
     ) {
         HintOverlay(
             anchors = controller.hints,

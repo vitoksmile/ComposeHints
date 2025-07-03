@@ -8,9 +8,17 @@ public final class com/viktormykhailiv/compose/hints/Hint {
 	public static final field $stable I
 }
 
+public final class com/viktormykhailiv/compose/hints/HintAnchorAnimationMode : java/lang/Enum {
+	public static final field Follow Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;
+	public static final field Scale Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;
+	public static fun values ()[Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;
+}
+
 public final class com/viktormykhailiv/compose/hints/HintAnchorKt {
-	public static final fun hintAnchor (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;)Landroidx/compose/ui/Modifier;
-	public static synthetic fun hintAnchor$default (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun hintAnchor (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun hintAnchor$default (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 	public static final fun rememberHintAnchorState (Lcom/viktormykhailiv/compose/hints/Hint;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/HintAnchorState;
 }
 
@@ -21,11 +29,17 @@ public final class com/viktormykhailiv/compose/hints/HintAnchorState {
 public final class com/viktormykhailiv/compose/hints/HintAnimationDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/viktormykhailiv/compose/hints/HintAnimationDefaults;
+	public final fun anchorAnimationMode ()Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;
+	public final fun anchorOffsetAnimationSpec ()Landroidx/compose/animation/core/AnimationSpec;
+	public final fun anchorSizeAnimationSpec ()Landroidx/compose/animation/core/AnimationSpec;
 	public final fun enterTransition ()Landroidx/compose/animation/EnterTransition;
 	public final fun exitTransition ()Landroidx/compose/animation/ExitTransition;
 }
 
 public final class com/viktormykhailiv/compose/hints/HintAnimationDefaultsKt {
+	public static final fun getLocalAnchorAnimationMode ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalAnchorOffsetAnimationSpec ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalAnchorSizeAnimationSpec ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalHintOverlayEnterTransition ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalHintOverlayExitTransition ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
@@ -39,8 +53,8 @@ public final class com/viktormykhailiv/compose/hints/HintController {
 }
 
 public final class com/viktormykhailiv/compose/hints/HintControllerKt {
-	public static final fun rememberHintController (Landroidx/compose/ui/graphics/Brush;Landroidx/compose/animation/EnterTransition;Landroidx/compose/animation/ExitTransition;Landroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
-	public static final fun rememberHintController-KTwxG1Y (JLandroidx/compose/animation/EnterTransition;Landroidx/compose/animation/ExitTransition;Landroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
+	public static final fun rememberHintController (Landroidx/compose/ui/graphics/Brush;Landroidx/compose/animation/EnterTransition;Landroidx/compose/animation/ExitTransition;Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
+	public static final fun rememberHintController-ZPw9REg (JLandroidx/compose/animation/EnterTransition;Landroidx/compose/animation/ExitTransition;Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
 }
 
 public final class com/viktormykhailiv/compose/hints/HintKt {

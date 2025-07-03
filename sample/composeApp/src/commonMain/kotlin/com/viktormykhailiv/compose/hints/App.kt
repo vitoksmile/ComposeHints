@@ -4,7 +4,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +31,11 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -42,6 +47,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
+    var hintSettings by remember {
+        mutableStateOf(
+            HintSettings(
+                anchorAnimationMode = HintAnchorAnimationMode.Follow,
+            )
+        )
+    }
+    var showSettingsDialog by remember { mutableStateOf(false) }
+
     val coroutineScope = rememberCoroutineScope()
     val hintController = rememberHintController(
         overlay = Brush.linearGradient(
@@ -52,6 +66,9 @@ fun App() {
         ),
         overlayEnterTransition = fadeIn(tween(durationMillis = 1_000)),
         overlayExitTransition = fadeOut(tween(durationMillis = 1_000)),
+        anchorAnimationMode = hintSettings.anchorAnimationMode,
+        anchorSizeAnimationSpec = tween(durationMillis = 1_000),
+        anchorOffsetAnimationSpec = tween(durationMillis = 1_000),
     )
 
     val topAppBarHint = rememberHintContainer {
@@ -132,15 +149,18 @@ fun App() {
                                         hintController.show(bottomNavigationHintAnchor)
                                     }
                                 }
+
+                                showSettingsDialog = index == 2
                             },
                         )
                     }
                 }
             }
         ) {
-            Box(
+            Column(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
             ) {
                 Button(
                     modifier = Modifier
@@ -158,6 +178,16 @@ fun App() {
                 ) {
                     Text("Action")
                 }
+            }
+
+            if (showSettingsDialog) {
+                HintSettingsDialog(
+                    settings = hintSettings,
+                    onDismissRequest = {
+                        showSettingsDialog = false
+                        hintSettings = it
+                    },
+                )
             }
         }
     }

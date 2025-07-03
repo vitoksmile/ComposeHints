@@ -1,8 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/vitoksmile/ComposeHints/releases/tag/1.1.1)
+
+* Animations: anchor size
+
 ## [1.1.0](https://github.com/vitoksmile/ComposeHints/releases/tag/1.1.0)
 
-* Animations
+* Animations: overlay, hint
 
 ## [1.0.2](https://github.com/vitoksmile/ComposeHints/releases/tag/1.0.2)
 
