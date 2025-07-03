@@ -3,7 +3,7 @@
 <img src="readme/logo.jpg" alt="Gemini generated logo" width="720"/>
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.viktormykhailiv/compose-hints)](https://central.sonatype.com/search?namespace=com.viktormykhailiv&name=compose-hints)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.1.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![](https://img.shields.io/badge/Kotlin-Multiplatform-%237f52ff?logo=kotlin)](https://kotlinlang.org/docs/multiplatform.html)
 [![](https://img.shields.io/badge/Compose-Multiplatform-%234285f4?logo=kotlin)](https://www.jetbrains.com/compose-multiplatform/)
 [![](https://img.shields.io/github/license/vitoksmile/ComposeHints)](https://github.com/vitoksmile/ComposeHints/blob/main/LICENSE.txt)
@@ -22,13 +22,27 @@ tooltips, pointing to a particular UI element.
 
 First add the dependency to your project:
 
+```toml
+[versions]
+hints = "1.1.0"
+
+[libraries]
+health = { module = "com.viktormykhailiv:compose-hints", version.ref = "hints" }
+
+[plugins]
+```
+
+```
+implementation(libs.health)
+```
+
 ```kotlin
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("com.viktormykhailiv:compose-hints:$hints_version")
+    implementation("com.viktormykhailiv:compose-hints:1.1.0")
 }
 ```
 
@@ -139,8 +153,38 @@ val hintController = rememberHintController(
             Color.Blue.copy(alpha = 0.5f),
             Color.Red.copy(alpha = 0.5f),
         )
-    )
+    ),
 )
+```
+
+### Overlay enter/exit animations
+
+By default the background overlay appears/disappears with fade in/out animations. Those animations
+can be customized with `overlayEnterTransition` and `overlayExitTransition`:
+
+```kotlin
+val hintController = rememberHintController(
+    overlayEnterTransition = fadeIn(tween(durationMillis = 1_000)),
+    overlayExitTransition = fadeOut(tween(durationMillis = 1_000)),
+)
+```
+
+### Hint enter/exit animations
+
+By default the hint appears/disappears with no animation. The animation can be customized
+with using `Modifier.animateEnterExit`.
+
+```kotlin
+val hint = rememberHint {
+    Text(
+        modifier = Modifier
+            .animateEnterExit(
+                enter = fadeIn(tween(1_000)) + scaleIn(tween(1_000)),
+                exit = fadeOut(tween(1_000)) + scaleOut(tween(1_000))
+            ),
+        text = "Hello World",
+    )
+}
 ```
 
 ### Clip shape
@@ -153,10 +197,3 @@ Modifier.hintAnchor(hintAnchor, shape = RoundedCornerShape(16.dp))
 
 Modifier.hintAnchor(hintAnchor, shape = CircleShape)
 ```
-
-## Future plans
-
-ComposeHints is under development and some features are missing:
-
-- Animations
-- Ignore statusBar and navigationBar on Android

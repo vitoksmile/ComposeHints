@@ -1,5 +1,10 @@
 package com.viktormykhailiv.compose.hints
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -22,6 +27,10 @@ fun rememberHintContainer(content: @Composable () -> Unit): Hint {
     return rememberHint {
         Box(
             modifier = Modifier
+                .animateEnterExit(
+                    enter = fadeIn(tween(1_000)) + scaleIn(tween(1_000)),
+                    exit = fadeOut(tween(1_000)) + scaleOut(tween(1_000))
+                )
                 .padding(vertical = 8.dp)
                 .background(Color.Yellow, shape = RoundedCornerShape(16.dp))
                 .padding(16.dp),

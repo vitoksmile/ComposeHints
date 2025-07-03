@@ -1,7 +1,7 @@
 public final class com/viktormykhailiv/compose/hints/ComposableSingletons$HintKt {
 	public static final field INSTANCE Lcom/viktormykhailiv/compose/hints/ComposableSingletons$HintKt;
 	public fun <init> ()V
-	public final fun getLambda$1569858385$hints ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2066068798$hints ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/viktormykhailiv/compose/hints/Hint {
@@ -18,6 +18,18 @@ public final class com/viktormykhailiv/compose/hints/HintAnchorState {
 	public static final field $stable I
 }
 
+public final class com/viktormykhailiv/compose/hints/HintAnimationDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/viktormykhailiv/compose/hints/HintAnimationDefaults;
+	public final fun enterTransition ()Landroidx/compose/animation/EnterTransition;
+	public final fun exitTransition ()Landroidx/compose/animation/ExitTransition;
+}
+
+public final class com/viktormykhailiv/compose/hints/HintAnimationDefaultsKt {
+	public static final fun getLocalHintOverlayEnterTransition ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalHintOverlayExitTransition ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
 public final class com/viktormykhailiv/compose/hints/HintController {
 	public static final field $stable I
 	public final fun dismiss ()V
@@ -27,12 +39,12 @@ public final class com/viktormykhailiv/compose/hints/HintController {
 }
 
 public final class com/viktormykhailiv/compose/hints/HintControllerKt {
-	public static final fun rememberHintController (Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/HintController;
-	public static final fun rememberHintController-Iv8Zu3U (JLandroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
+	public static final fun rememberHintController (Landroidx/compose/ui/graphics/Brush;Landroidx/compose/animation/EnterTransition;Landroidx/compose/animation/ExitTransition;Landroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
+	public static final fun rememberHintController-KTwxG1Y (JLandroidx/compose/animation/EnterTransition;Landroidx/compose/animation/ExitTransition;Landroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
 }
 
 public final class com/viktormykhailiv/compose/hints/HintKt {
-	public static final fun rememberHint (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/Hint;
+	public static final fun rememberHint (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/Hint;
 }
 
 public final class com/viktormykhailiv/compose/hints/HintOverlayBackgroundKt {

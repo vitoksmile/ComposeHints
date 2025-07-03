@@ -1,5 +1,8 @@
 package com.viktormykhailiv.compose.hints
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -46,7 +49,9 @@ fun App() {
                 Color.Blue.copy(alpha = 0.5f),
                 Color.Red.copy(alpha = 0.5f),
             )
-        )
+        ),
+        overlayEnterTransition = fadeIn(tween(durationMillis = 1_000)),
+        overlayExitTransition = fadeOut(tween(durationMillis = 1_000)),
     )
 
     val topAppBarHint = rememberHintContainer {
