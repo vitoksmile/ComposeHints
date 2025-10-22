@@ -141,6 +141,8 @@ private fun rememberHintController(
     anchorSizeAnimationSpec: AnimationSpec<Size>,
     anchorOffsetAnimationSpec: AnimationSpec<Offset>,
 ): HintController {
+    requireNotNull(LocalHintHostController.current)
+
     val controller = remember { HintController() }
 
     CompositionLocalProvider(
@@ -154,7 +156,8 @@ private fun rememberHintController(
         HintOverlay(
             anchors = controller.hints,
             activeAnchorIndex = controller.activeAnchorIndex,
-            onDismiss = controller::onDismissed,
+            onDismissCurrentHint = controller::onDismissed,
+            onDismiss = controller::dismiss,
         )
     }
 

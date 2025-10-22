@@ -3,7 +3,7 @@
 <img src="readme/logo.jpg" alt="Gemini generated logo" width="720"/>
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.viktormykhailiv/compose-hints)](https://central.sonatype.com/search?namespace=com.viktormykhailiv&name=compose-hints)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.2.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![](https://img.shields.io/badge/Kotlin-Multiplatform-%237f52ff?logo=kotlin)](https://kotlinlang.org/docs/multiplatform.html)
 [![](https://img.shields.io/badge/Compose-Multiplatform-%234285f4?logo=kotlin)](https://www.jetbrains.com/compose-multiplatform/)
 [![](https://img.shields.io/github/license/vitoksmile/ComposeHints)](https://github.com/vitoksmile/ComposeHints/blob/main/LICENSE.txt)
@@ -24,16 +24,16 @@ First add the dependency to your project:
 
 ```toml
 [versions]
-hints = "1.1.1"
+hints = "2.0.0"
 
 [libraries]
-health = { module = "com.viktormykhailiv:compose-hints", version.ref = "hints" }
+compose-hints = { module = "com.viktormykhailiv:compose-hints", version.ref = "hints" }
 
 [plugins]
 ```
 
 ```
-implementation(libs.health)
+implementation(libs.compose.hints)
 ```
 
 ```kotlin
@@ -42,12 +42,12 @@ repositories {
 }
 
 dependencies {
-    implementation("com.viktormykhailiv:compose-hints:1.1.1")
+    implementation("com.viktormykhailiv:compose-hints:2.0.0")
 }
 ```
 
-To show a hint we need the `HintController`, `Hint` composable, and `hintAnchor` Modifier along
-with `HintAnchorState`:
+To show a hint we need wrap root Composable with `HintHost`, configure `HintController`, 
+`Hint` composable, and `hintAnchor` Modifier along with `HintAnchorState`:
 
 ```kotlin
 val coroutineScope = rememberCoroutineScope()

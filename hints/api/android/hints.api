@@ -57,6 +57,10 @@ public final class com/viktormykhailiv/compose/hints/HintControllerKt {
 	public static final fun rememberHintController-ZPw9REg (JLandroidx/compose/animation/EnterTransition;Landroidx/compose/animation/ExitTransition;Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/runtime/Composer;II)Lcom/viktormykhailiv/compose/hints/HintController;
 }
 
+public final class com/viktormykhailiv/compose/hints/HintHostKt {
+	public static final fun HintHost (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+}
+
 public final class com/viktormykhailiv/compose/hints/HintKt {
 	public static final fun rememberHint (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/Hint;
 }

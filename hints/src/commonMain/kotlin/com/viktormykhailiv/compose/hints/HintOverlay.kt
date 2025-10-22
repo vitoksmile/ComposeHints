@@ -6,19 +6,22 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.backhandler.BackHandler
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun HintOverlay(
     anchors: List<HintAnchorState>,
     activeAnchorIndex: Int,
+    onDismissCurrentHint: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     val visibleState = remember { MutableTransitionState<Boolean>(false) }
@@ -34,22 +37,38 @@ internal fun HintOverlay(
     }
     if (!showPopup) return
 
-    Popup(
-        onDismissRequest = onDismiss,
-        // Set focusable to handle back press events
-        properties = remember { PopupProperties(focusable = true) },
-    ) {
-        AnimatedVisibility(
-            visibleState = visibleState,
-            enter = LocalHintOverlayEnterTransition.current,
-            exit = LocalHintOverlayExitTransition.current,
+    val hintOverlayColor = LocalHintOverlayColor.current
+    val hintOverlayBrush = LocalHintOverlayBrush.current
+    val overlayEnterTransition = LocalHintOverlayEnterTransition.current
+    val overlayExitTransition = LocalHintOverlayExitTransition.current
+    val anchorAnimationMode = LocalAnchorAnimationMode.current
+    val anchorSizeAnimationSpec = LocalAnchorSizeAnimationSpec.current
+    val anchorOffsetAnimationSpec = LocalAnchorOffsetAnimationSpec.current
+
+    LocalHintHostController.current.Content {
+        BackHandler { onDismiss() }
+
+        CompositionLocalProvider(
+            LocalHintOverlayColor provides hintOverlayColor,
+            LocalHintOverlayBrush provides hintOverlayBrush,
+            LocalHintOverlayEnterTransition provides overlayEnterTransition,
+            LocalHintOverlayExitTransition provides overlayExitTransition,
+            LocalAnchorAnimationMode provides anchorAnimationMode,
+            LocalAnchorSizeAnimationSpec provides anchorSizeAnimationSpec,
+            LocalAnchorOffsetAnimationSpec provides anchorOffsetAnimationSpec,
         ) {
-            HintsContainer(
-                modifier = Modifier.fillMaxSize(),
-                anchors = anchors,
-                activeAnchorIndex = activeAnchorIndex,
-                onDismiss = onDismiss,
-            )
+            AnimatedVisibility(
+                visibleState = visibleState,
+                enter = overlayEnterTransition,
+                exit = overlayExitTransition,
+            ) {
+                HintsContainer(
+                    modifier = Modifier.fillMaxSize(),
+                    anchors = anchors,
+                    activeAnchorIndex = activeAnchorIndex,
+                    onDismissCurrentHint = onDismissCurrentHint,
+                )
+            }
         }
     }
 }

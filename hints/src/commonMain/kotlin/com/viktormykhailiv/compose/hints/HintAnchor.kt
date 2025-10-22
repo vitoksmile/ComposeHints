@@ -1,8 +1,6 @@
 package com.viktormykhailiv.compose.hints
 
 import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -17,7 +15,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 
 @Stable
@@ -57,14 +54,11 @@ fun Modifier.hintAnchor(
     sizeAnimationSpec: AnimationSpec<Size>? = HintAnimationDefaults.anchorSizeAnimationSpec(),
     offsetAnimationSpec: AnimationSpec<Offset>? = HintAnimationDefaults.anchorOffsetAnimationSpec(),
 ): Modifier = composed {
-    val statusBarInsets = WindowInsets.statusBars.getTop(LocalDensity.current).toFloat()
     state.shape = shape
     state.sizeAnimationSpec = sizeAnimationSpec
     state.offsetAnimationSpec = offsetAnimationSpec
     onGloballyPositioned {
         state.size = it.size
         state.offset = it.positionInRoot()
-            // To fix WindowInsets for iOS and Android
-            .minus(Offset(x = 0f, y = statusBarInsets))
     }
 }

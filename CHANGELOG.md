@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.0](https://github.com/vitoksmile/ComposeHints/releases/tag/2.0.0)
+
+*  HintHost as root Composable to define a place where hints are shown
+
 ## [1.1.1](https://github.com/vitoksmile/ComposeHints/releases/tag/1.1.1)
 
 * Animations: anchor size

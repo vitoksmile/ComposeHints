@@ -4,8 +4,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,6 +46,13 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
+    HintHost {
+        AppInternal()
+    }
+}
+
+@Composable
+private fun AppInternal() {
     var hintSettings by remember {
         mutableStateOf(
             HintSettings(
@@ -156,11 +162,11 @@ fun App() {
                     }
                 }
             }
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center,
             ) {
                 Button(
                     modifier = Modifier
