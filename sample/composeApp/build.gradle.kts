@@ -114,7 +114,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.viktormykhailiv.compose.hints"
-            packageVersion = "2.0.0"
+            packageVersion = "2.0.1"
         }
     }
 }

@@ -48,6 +48,8 @@ internal interface HintHostController {
 
     @Composable
     fun Content(content: @Composable () -> Unit)
+
+    fun disposeContent()
 }
 
 private interface HintHostControllerOwner : HintHostController {
@@ -69,6 +71,10 @@ private fun rememberHintHostControllerOwner(): HintHostControllerOwner = remembe
         @Composable
         override fun Content(content: @Composable (() -> Unit)) {
             this.content.value = content
+        }
+
+        override fun disposeContent() {
+            content.value = null
         }
     }
 }

@@ -35,7 +35,10 @@ internal fun HintOverlay(
                 // Still show popup if exit animation is running
                 !visibleState.targetState && !visibleState.isIdle
     }
-    if (!showPopup) return
+    if (!showPopup) {
+        LocalHintHostController.current.disposeContent()
+        return
+    }
 
     val hintOverlayColor = LocalHintOverlayColor.current
     val hintOverlayBrush = LocalHintOverlayBrush.current
