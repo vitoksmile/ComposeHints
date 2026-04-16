@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.0](https://github.com/vitoksmile/ComposeHints/releases/tag/2.1.0)
+
+*  Added `Properties` to customize the behavior of a Hint: `dismissOnBackPress`, `dismissOnClickOutside`
+
 ## [2.0.1](https://github.com/vitoksmile/ComposeHints/releases/tag/2.0.1)
 
 *  Fixed BackHandler

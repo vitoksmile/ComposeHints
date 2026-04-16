@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
@@ -77,27 +79,64 @@ private fun AppInternal() {
         anchorOffsetAnimationSpec = tween(durationMillis = 1_000),
     )
 
-    val topAppBarHint = rememberHintContainer {
-        OutlinedButton(
-            onClick = {
-                hintController.dismiss()
+    val topAppBarHint = rememberHintContainer(
+        properties = HintProperties(
+            dismissOnBackPress = false,
+        ),
+    ) {
+        Column {
+            Text("Hint for TopAppBar")
+            Text("* click outside to dismiss current hint")
+            Text("* click/swipe back to dismiss is disabled")
+
+            OutlinedButton(
+                modifier = Modifier.padding(top = 8.dp),
+                onClick = { hintController.dismiss() },
+            ) {
+                Text("Dismiss all hints")
             }
-        ) { Text("Hint for TopAppBar") }
+        }
     }
     val topAppBarActionHintAnchor = rememberHintAnchorState(topAppBarHint)
 
     val actionHint = rememberHintContainer {
-        Text("Hint for Action")
+        Column {
+            Text("Hint for Action")
+            Text("* click outside to dismiss current hint")
+            Text("* click/swipe back to dismiss all hints")
+        }
     }
     val actionHintAnchor = rememberHintAnchorState(actionHint)
 
-    val bottomNavigationHint = rememberHintContainer {
+    val bottomNavigationHint = rememberHintContainer(
+        properties = HintProperties(
+            dismissOnClickOutside = false,
+        ),
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Spacer(Modifier.size(32.dp).background(Color.Magenta, CircleShape))
-            Spacer(Modifier.size(8.dp))
-            Text("Hint for BottomNavigation")
+            Spacer(
+                modifier = Modifier.size(32.dp)
+                    .background(Color.Magenta, CircleShape),
+            )
+
+            Column(
+                modifier = Modifier.padding(horizontal = 8.dp),
+            ) {
+                Text("Hint for BottomNavigation")
+                Text("* click outside is disabled")
+                Text("* click/swipe back to dismiss current hint")
+            }
+
+            IconButton(
+                onClick = { hintController.dismiss() },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Close",
+                )
+            }
         }
     }
     val bottomNavigationHintAnchor = rememberHintAnchorState(bottomNavigationHint)

@@ -9,14 +9,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
 @Stable
-class Hint internal constructor() {
+class Hint internal constructor(
+    internal val properties: HintProperties,
+) {
 
     internal var content: @Composable AnimatedVisibilityScope.() -> Unit by mutableStateOf({})
 }
 
 @Composable
-fun rememberHint(content: @Composable AnimatedVisibilityScope.() -> Unit): Hint {
-    return remember {
-        Hint().also { it.content = content }
+fun rememberHint(
+    properties: HintProperties = HintProperties(),
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
+): Hint {
+    return remember(properties) {
+        Hint(properties).also { it.content = content }
     }
 }

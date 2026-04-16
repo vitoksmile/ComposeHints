@@ -23,8 +23,11 @@ import androidx.compose.ui.unit.sp
  * App specific hint implementation, with background.
  */
 @Composable
-fun rememberHintContainer(content: @Composable () -> Unit): Hint {
-    return rememberHint {
+fun rememberHintContainer(
+    properties: HintProperties = HintProperties(),
+    content: @Composable () -> Unit,
+): Hint {
+    return rememberHint(properties) {
         Box(
             modifier = Modifier
                 .animateEnterExit(

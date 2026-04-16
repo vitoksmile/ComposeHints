@@ -60,20 +60,32 @@ class HintController internal constructor() {
         }
     }
 
-    internal fun onDismissed() {
-        val index = activeAnchorIndex.takeIf { it >= 0 } ?: return
-        val hint = queue.getOrNull(index) ?: run {
-            activeAnchorIndex = -1
+    fun dismiss() {
+        pendingRequests.values
+            .forEach { continuation ->
+                continuation.resumeWithException(CancellationException("Hint was dismissed"))
+            }
+        pendingRequests.clear()
+        queue.clear()
+        activeAnchorIndex = -1
+    }
+
+    internal fun dismissCurrentHintOnClickOutside() {
+        val hint = findCurrentHint() ?: return
+
+        if (hint.hint.properties.dismissOnClickOutside.not()) {
+            // Hint not dismissable
             return
         }
+
         activeAnchorIndex++
         if (activeAnchorIndex >= queue.size) {
             activeAnchorIndex = -1
         }
-        onDismissed(hint)
+        dismissCurrentHintOnClickOutside(hint)
     }
 
-    internal fun onDismissed(hint: HintAnchorState) {
+    internal fun dismissCurrentHintOnClickOutside(hint: HintAnchorState) {
         pendingRequests[hint]?.let { continuation ->
             continuation.resume(Unit)
             pendingRequests.remove(hint)
@@ -83,14 +95,31 @@ class HintController internal constructor() {
         }
     }
 
-    fun dismiss() {
-        pendingRequests.values
-            .forEach { continuation ->
-                continuation.resumeWithException(CancellationException("Hint was dismissed"))
+    internal fun dismissAllHintsOnBackClicked() {
+        val hint = findCurrentHint()
+            ?: run {
+                dismiss()
+                return
             }
-        pendingRequests.clear()
-        queue.clear()
-        activeAnchorIndex = -1
+
+        if (hint.hint.properties.dismissOnBackPress.not()) {
+            // Hint not dismissable
+            return
+        }
+
+        dismiss()
+    }
+
+    private fun findCurrentHint(): HintAnchorState? {
+        val index = activeAnchorIndex
+            .takeIf { it >= 0 }
+            ?: return null
+
+        return queue.getOrNull(index)
+            ?: run {
+                activeAnchorIndex = -1
+                null
+            }
     }
 }
 
@@ -156,8 +185,8 @@ private fun rememberHintController(
         HintOverlay(
             anchors = controller.hints,
             activeAnchorIndex = controller.activeAnchorIndex,
-            onDismissCurrentHint = controller::onDismissed,
-            onDismiss = controller::dismiss,
+            dismissCurrentHintOnClickOutside = controller::dismissCurrentHintOnClickOutside,
+            onBackClicked = controller::dismissAllHintsOnBackClicked,
         )
     }
 

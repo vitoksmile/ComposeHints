@@ -24,7 +24,7 @@ First add the dependency to your project:
 
 ```toml
 [versions]
-hints = "2.0.1"
+hints = "2.1.0"
 
 [libraries]
 compose-hints = { module = "com.viktormykhailiv:compose-hints", version.ref = "hints" }
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.viktormykhailiv:compose-hints:2.0.1")
+    implementation("com.viktormykhailiv:compose-hints:2.1.0")
 }
 ```
 
@@ -135,6 +135,24 @@ And in our apps we will our new `rememberHintContainer` composable:
 -val hint = rememberHint {
 +val hint = rememberHintContainer {
     Text("Hello World")
+}
+```
+
+### Hint dismissable properties
+
+Each `Hint` can be configured to be not dismissable:
+- `dismissOnBackPress` - whether the hint can be dismissed by pressing the back or escape buttons on 
+Android or the escape key on desktop
+- `dismissOnClickOutside` whether the hint can be dismissed by clicking outside the hint's bounds
+
+```kotlin
+rememberHint(
+    properties = HintProperties(
+        dismissOnBackPress = false,
+        dismissOnClickOutside = false,
+    ),
+) {
+    // Hint content here
 }
 ```
 

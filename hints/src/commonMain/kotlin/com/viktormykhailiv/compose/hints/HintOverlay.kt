@@ -21,8 +21,8 @@ import androidx.compose.ui.backhandler.BackHandler
 internal fun HintOverlay(
     anchors: List<HintAnchorState>,
     activeAnchorIndex: Int,
-    onDismissCurrentHint: () -> Unit,
-    onDismiss: () -> Unit,
+    dismissCurrentHintOnClickOutside: () -> Unit,
+    onBackClicked: () -> Unit,
 ) {
     val visibleState = remember { MutableTransitionState<Boolean>(false) }
     LaunchedEffect(activeAnchorIndex) {
@@ -49,7 +49,7 @@ internal fun HintOverlay(
     val anchorOffsetAnimationSpec = LocalAnchorOffsetAnimationSpec.current
 
     LocalHintHostController.current.Content {
-        BackHandler { onDismiss() }
+        BackHandler { onBackClicked() }
 
         CompositionLocalProvider(
             LocalHintOverlayColor provides hintOverlayColor,
@@ -69,7 +69,7 @@ internal fun HintOverlay(
                     modifier = Modifier.fillMaxSize(),
                     anchors = anchors,
                     activeAnchorIndex = activeAnchorIndex,
-                    onDismissCurrentHint = onDismissCurrentHint,
+                    dismissCurrentHintOnClickOutside = dismissCurrentHintOnClickOutside,
                 )
             }
         }

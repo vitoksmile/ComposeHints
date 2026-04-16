@@ -22,7 +22,7 @@ internal fun HintsContainer(
     modifier: Modifier,
     anchors: List<HintAnchorState>,
     activeAnchorIndex: Int,
-    onDismissCurrentHint: () -> Unit,
+    dismissCurrentHintOnClickOutside: () -> Unit,
 ) {
     val visibleStates = remember {
         anchors.map { MutableTransitionState(false) }
@@ -40,7 +40,7 @@ internal fun HintsContainer(
                 interactionSource = null,
                 // Disable ripple
                 indication = null,
-                onClick = onDismissCurrentHint,
+                onClick = dismissCurrentHintOnClickOutside,
             ),
         content = {
             anchors.forEachIndexed { index, anchor ->
