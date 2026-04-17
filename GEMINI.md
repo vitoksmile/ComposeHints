@@ -3,10 +3,11 @@
 You are an expert developer working on **ComposeHints**, a Compose Multiplatform library for displaying hints and tooltips.
 
 ## Tech Stack
-- **Language:** Kotlin 2.2.20+
-- **Framework:** Compose Multiplatform 1.9.1+
+- **Language:** Kotlin 2.3.20+
+- **Framework:** Compose Multiplatform 1.10.3+
 - **Platforms:** Android, iOS, Desktop (JVM), Web (Wasm)
-- **Build System:** Gradle (Kotlin DSL) with `libs.versions.toml`
+- **Build System:** Gradle 9.4.1 (Kotlin DSL) with `libs.versions.toml`
+- **AGP:** 9.1.1+ (Note: Currently using `android.builtInKotlin=false` bypass for single-module compatibility)
 
 ## Architecture & Design Patterns
 

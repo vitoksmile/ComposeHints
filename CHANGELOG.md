@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.0](https://github.com/vitoksmile/ComposeHints/releases/tag/2.2.0)
+
+*  Kotlin 2.3.20 & Compose Multiplatform 1.10.3
+*  AGP 9.1.1 & Gradle 9.4.1
+*  Fixed `IndexOutOfBoundsException` ([#4](https://github.com/vitoksmile/ComposeHints/issues/4))
+
 ## [2.1.0](https://github.com/vitoksmile/ComposeHints/releases/tag/2.1.0)
 
 *  Added `Properties` to customize the behavior of a Hint: `dismissOnBackPress`, `dismissOnClickOutside`

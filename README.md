@@ -3,7 +3,7 @@
 <img src="readme/logo.jpg" alt="Gemini generated logo" width="720"/>
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.viktormykhailiv/compose-hints)](https://central.sonatype.com/search?namespace=com.viktormykhailiv&name=compose-hints)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.2.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.3.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![](https://img.shields.io/badge/Kotlin-Multiplatform-%237f52ff?logo=kotlin)](https://kotlinlang.org/docs/multiplatform.html)
 [![](https://img.shields.io/badge/Compose-Multiplatform-%234285f4?logo=kotlin)](https://www.jetbrains.com/compose-multiplatform/)
 [![](https://img.shields.io/github/license/vitoksmile/ComposeHints)](https://github.com/vitoksmile/ComposeHints/blob/main/LICENSE.txt)
@@ -24,7 +24,7 @@ First add the dependency to your project:
 
 ```toml
 [versions]
-hints = "2.1.0"
+hints = "2.2.0"
 
 [libraries]
 compose-hints = { module = "com.viktormykhailiv:compose-hints", version.ref = "hints" }
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.viktormykhailiv:compose-hints:2.1.0")
+    implementation("com.viktormykhailiv:compose-hints:2.2.0")
 }
 ```
 
