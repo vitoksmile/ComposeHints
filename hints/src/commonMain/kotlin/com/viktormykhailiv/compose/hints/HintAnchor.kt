@@ -2,6 +2,7 @@ package com.viktormykhailiv.compose.hints
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.IntSize
@@ -54,11 +56,33 @@ fun Modifier.hintAnchor(
     sizeAnimationSpec: AnimationSpec<Size>? = HintAnimationDefaults.anchorSizeAnimationSpec(),
     offsetAnimationSpec: AnimationSpec<Offset>? = HintAnimationDefaults.anchorOffsetAnimationSpec(),
 ): Modifier = composed {
+    val hostController = LocalHintHostController.current
+    var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+    fun updateOffset(self: LayoutCoordinates) {
+        state.size = self.size
+
+        val hostCoordinates = hostController.hostCoordinates
+        if (hostCoordinates != null && hostCoordinates.isAttached) {
+            state.offset = hostCoordinates.localPositionOf(self, Offset.Zero)
+        } else {
+            state.offset = self.positionInRoot()
+        }
+    }
+
+    LaunchedEffect(selfCoordinates, hostController.hostCoordinates) {
+        val self = selfCoordinates ?: return@LaunchedEffect
+        if (self.isAttached) {
+            updateOffset(self)
+        }
+    }
+
     state.shape = shape
     state.sizeAnimationSpec = sizeAnimationSpec
     state.offsetAnimationSpec = offsetAnimationSpec
+
     onGloballyPositioned {
-        state.size = it.size
-        state.offset = it.positionInRoot()
+        selfCoordinates = it
+        updateOffset(it)
     }
 }

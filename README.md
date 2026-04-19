@@ -138,23 +138,42 @@ And in our apps we will our new `rememberHintContainer` composable:
 }
 ```
 
-### Hint dismissable properties
+### Hint Properties
 
-Each `Hint` can be configured to be not dismissable:
-- `dismissOnBackPress` - whether the hint can be dismissed by pressing the back or escape buttons on 
-Android or the escape key on desktop
-- `dismissOnClickOutside` whether the hint can be dismissed by clicking outside the hint's bounds
+Each `Hint` can be configured with `HintProperties`:
+- `dismissOnBackPress`: whether the hint can be dismissed by pressing the back button.
+- `dismissOnClickOutside`: whether the hint can be dismissed by clicking outside its bounds.
+- `alignment`: where the hint should appear relative to the anchor (e.g., `Top`, `EndTop`, `Center`).
+- `padding`: the distance between the hint and its anchor.
+- `offset`: additional manual adjustment via `DpOffset`.
 
 ```kotlin
 rememberHint(
     properties = HintProperties(
         dismissOnBackPress = false,
-        dismissOnClickOutside = false,
+        alignment = HintAlignment.EndTop,
+        padding = 8.dp,
+        offset = DpOffset(x = 4.dp, y = 0.dp),
     ),
 ) {
     // Hint content here
 }
 ```
+
+### Advanced Positioning
+
+ComposeHints provides a flexible alignment system with built-in **Smart Flipping** and **RTL Awareness**.
+
+#### Alignment Options
+You can choose from several alignment strategies:
+- **Basic**: `Top`, `Bottom`, `Start`, `End`, `Center`, `Overlap`.
+- **Specific**: `TopStart`, `TopEnd`, `BottomStart`, `BottomEnd`, `StartTop`, `StartBottom`, `EndTop`, `EndBottom`.
+
+#### Smart Flipping
+If a hint is set to `Top` but there isn't enough space above the anchor, the library will automatically flip it to the `Bottom` to ensure it remains visible. This works for all specific alignments as well (e.g., `EndTop` will flip to `StartTop` if it hits the screen edge).
+
+#### RTL Awareness
+Alignments like `Start` and `End` are automatically mirrored in Right-to-Left (RTL) layouts, so your onboarding flows will look correct for all users without any extra code.
 
 ### Overlay color
 

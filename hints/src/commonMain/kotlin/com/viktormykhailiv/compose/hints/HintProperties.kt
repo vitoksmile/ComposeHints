@@ -1,6 +1,91 @@
 package com.viktormykhailiv.compose.hints
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
+
+/**
+ * Alignment of the hint relative to its anchor.
+ */
+enum class HintAlignment {
+    /**
+     * Placed above the anchor, centered horizontally.
+     * Smart positioning: if it doesn't fit on top, it flips to the bottom.
+     */
+    Top,
+
+    /**
+     * Placed below the anchor, centered horizontally.
+     * Smart positioning: if it doesn't fit at the bottom, it flips to the top.
+     */
+    Bottom,
+
+    /**
+     * Placed at the start of the anchor (left in LTR, right in RTL), centered vertically.
+     * Smart positioning: if it doesn't fit at the start, it flips to the end.
+     */
+    Start,
+
+    /**
+     * Placed at the end of the anchor (right in LTR, left in RTL), centered vertically.
+     * Smart positioning: if it doesn't fit at the end, it flips to the start.
+     */
+    End,
+
+    /**
+     * Perfectly centered over the anchor on both X and Y axes.
+     */
+    Center,
+
+    /**
+     * Aligns the top-start corner of the hint with the top-start corner of the anchor.
+     * Useful as a base for custom manual offsets relative to the anchor's origin.
+     */
+    Overlap,
+
+    // Specific alignments with smart flipping
+
+    /**
+     * Above the anchor, aligned to the start edge. Flips to [BottomStart] if no space.
+     */
+    TopStart,
+
+    /**
+     * Above the anchor, aligned to the end edge. Flips to [BottomEnd] if no space.
+     */
+    TopEnd,
+
+    /**
+     * Below the anchor, aligned to the start edge. Flips to [TopStart] if no space.
+     */
+    BottomStart,
+
+    /**
+     * Below the anchor, aligned to the end edge. Flips to [TopEnd] if no space.
+     */
+    BottomEnd,
+
+    /**
+     * At the start of the anchor, aligned to the top edge. Flips to [EndTop] if no space.
+     */
+    StartTop,
+
+    /**
+     * At the start of the anchor, aligned to the bottom edge. Flips to [EndBottom] if no space.
+     */
+    StartBottom,
+
+    /**
+     * At the end of the anchor, aligned to the top edge. Flips to [StartTop] if no space.
+     */
+    EndTop,
+
+    /**
+     * At the end of the anchor, aligned to the bottom edge. Flips to [StartBottom] if no space.
+     */
+    EndBottom,
+}
 
 /**
  * Properties used to customize the behavior of a [Hint].
@@ -10,9 +95,15 @@ import androidx.compose.runtime.Immutable
  *   onDismissRequest.
  * @property dismissOnClickOutside whether the hint can be dismissed by clicking outside the
  *   hint's bounds.
+ * @property alignment the alignment of the hint relative to its anchor.
+ * @property padding the padding between the hint and its anchor.
+ * @property offset additional offset to apply to the hint's position.
  */
 @Immutable
 data class HintProperties(
     val dismissOnBackPress: Boolean = true,
     val dismissOnClickOutside: Boolean = true,
+    val alignment: HintAlignment = HintAlignment.Bottom,
+    val padding: Dp = 0.dp,
+    val offset: DpOffset = DpOffset.Zero,
 )

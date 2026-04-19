@@ -4,10 +4,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 
 /**
  * Wrap root Composable with `HintHost` to define a space where Hints will be shown.
@@ -25,11 +29,13 @@ import androidx.compose.ui.Modifier
 fun HintHost(
     content: @Composable () -> Unit,
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        val hostController = rememberHintHostControllerOwner()
+    val hostController = rememberHintHostControllerOwner()
 
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .onGloballyPositioned { hostController.hostCoordinates = it },
+    ) {
         CompositionLocalProvider(
             LocalHintHostController provides hostController,
         ) {
@@ -45,6 +51,7 @@ internal val LocalHintHostController = staticCompositionLocalOf<HintHostControll
 }
 
 internal interface HintHostController {
+    val hostCoordinates: LayoutCoordinates?
 
     @Composable
     fun Content(content: @Composable () -> Unit)
@@ -53,6 +60,7 @@ internal interface HintHostController {
 }
 
 private interface HintHostControllerOwner : HintHostController {
+    override var hostCoordinates: LayoutCoordinates?
 
     @Composable
     fun ObserveContent()
@@ -61,6 +69,8 @@ private interface HintHostControllerOwner : HintHostController {
 @Composable
 private fun rememberHintHostControllerOwner(): HintHostControllerOwner = remember {
     object : HintHostControllerOwner {
+        override var hostCoordinates: LayoutCoordinates? by mutableStateOf(null)
+
         var content = mutableStateOf<(@Composable () -> Unit)?>(null)
 
         @Composable

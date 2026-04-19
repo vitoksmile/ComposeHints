@@ -68,15 +68,15 @@ internal fun Modifier.overlayBackground(
         }
     }
 
-    LaunchedEffect(activeAnchorIndex, anchors) {
-        val anchor = anchors.getOrNull(activeAnchorIndex) ?: return@LaunchedEffect
+    LaunchedEffect(activeAnchorIndex, anchors, currentAnchor?.offset, currentAnchor?.size) {
+        val anchor = currentAnchor ?: return@LaunchedEffect
         val sizeAnimatable = sizes[anchor.hint] ?: return@LaunchedEffect
         val offsetAnimatable = offsets[anchor.hint] ?: return@LaunchedEffect
 
         launch {
             if (anchorAnimationMode == HintAnchorAnimationMode.Follow && activeAnchorIndex != 0) {
                 val previousAnchor = anchors.getOrNull(activeAnchorIndex - 1)
-                if (previousAnchor != null) {
+                if (previousAnchor != null && !sizeAnimatable.isRunning) {
                     sizeAnimatable.snapTo(previousAnchor.size.toSize())
                 }
             }
@@ -90,26 +90,30 @@ internal fun Modifier.overlayBackground(
         launch {
             when {
                 anchorAnimationMode == HintAnchorAnimationMode.Scale -> {
-                    offsetAnimatable.snapTo(
-                        anchor.offset.copy(
-                            x = anchor.offset.x + anchor.size.width / 2,
-                            y = anchor.offset.y + anchor.size.height / 2,
+                    if (!offsetAnimatable.isRunning) {
+                        offsetAnimatable.snapTo(
+                            anchor.offset.copy(
+                                x = anchor.offset.x + anchor.size.width / 2,
+                                y = anchor.offset.y + anchor.size.height / 2,
+                            )
                         )
-                    )
+                    }
                 }
 
                 activeAnchorIndex == 0 -> {
-                    offsetAnimatable.snapTo(
-                        anchor.offset.copy(
-                            x = anchor.offset.x + anchor.size.width / 2,
-                            y = anchor.offset.y + anchor.size.height / 2,
+                    if (!offsetAnimatable.isRunning) {
+                        offsetAnimatable.snapTo(
+                            anchor.offset.copy(
+                                x = anchor.offset.x + anchor.size.width / 2,
+                                y = anchor.offset.y + anchor.size.height / 2,
+                            )
                         )
-                    )
+                    }
                 }
 
                 else -> {
                     val previousAnchor = anchors.getOrNull(activeAnchorIndex - 1)
-                    if (previousAnchor != null) {
+                    if (previousAnchor != null && !offsetAnimatable.isRunning) {
                         offsetAnimatable.snapTo(previousAnchor.offset)
                     }
                 }

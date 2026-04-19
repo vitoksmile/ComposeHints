@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.BottomNavigation
@@ -41,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import androidx.compose.ui.tooling.preview.Preview
@@ -82,6 +84,9 @@ private fun AppInternal() {
     val topAppBarHint = rememberHintContainer(
         properties = HintProperties(
             dismissOnBackPress = false,
+            alignment = HintAlignment.EndTop,
+            padding = 16.dp,
+            offset = DpOffset(x = 0.dp, y = 8.dp),
         ),
     ) {
         Column {
@@ -140,6 +145,67 @@ private fun AppInternal() {
         }
     }
     val bottomNavigationHintAnchor = rememberHintAnchorState(bottomNavigationHint)
+
+    // Alignment showcase hints
+    val topHint = rememberHintContainer(
+        properties = HintProperties(
+            alignment = HintAlignment.Top,
+            padding = 8.dp,
+        ),
+        shape = CutCornerShape(topStart = 16.dp),
+    ) {
+        Text("HintAlignment.Top")
+    }
+    val topHintAnchor = rememberHintAnchorState(topHint)
+
+    val bottomHint = rememberHintContainer(
+        properties = HintProperties(
+            alignment = HintAlignment.Bottom,
+            padding = 8.dp,
+        ),
+        shape = CutCornerShape(bottomEnd = 16.dp),
+    ) {
+        Text("HintAlignment.Bottom")
+    }
+    val bottomHintAnchor = rememberHintAnchorState(bottomHint)
+
+    val startHint = rememberHintContainer(
+        properties = HintProperties(
+            alignment = HintAlignment.Start,
+            padding = 8.dp,
+        ),
+        shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
+    ) {
+        Text("HintAlignment.Start")
+    }
+    val startHintAnchor = rememberHintAnchorState(startHint)
+
+    val endHint = rememberHintContainer(
+        properties = HintProperties(
+            alignment = HintAlignment.End,
+            padding = 8.dp,
+        ),
+        shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
+    ) {
+        Text("HintAlignment.End")
+    }
+    val endHintAnchor = rememberHintAnchorState(endHint)
+
+    val centerHint = rememberHintContainer(
+        properties = HintProperties(alignment = HintAlignment.Center),
+        shape = CircleShape,
+    ) {
+        Text("Center")
+    }
+    val centerHintAnchor = rememberHintAnchorState(centerHint)
+
+    val overlapHint = rememberHintContainer(
+        properties = HintProperties(alignment = HintAlignment.Overlap),
+        shape = RoundedCornerShape(0.dp),
+    ) {
+        Text("Overlap")
+    }
+    val overlapHintAnchor = rememberHintAnchorState(overlapHint)
 
     MaterialTheme {
         Scaffold(
@@ -207,21 +273,106 @@ private fun AppInternal() {
                     .padding(innerPadding),
                 contentAlignment = Alignment.Center,
             ) {
-                Button(
-                    modifier = Modifier
-                        .hintAnchor(actionHintAnchor, RoundedCornerShape(16.dp))
-                        .padding(4.dp),
-                    onClick = {
-                        coroutineScope.launch {
-                            hintController.show(
-                                topAppBarActionHintAnchor,
-                                actionHintAnchor,
-                                bottomNavigationHintAnchor,
-                            )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Button(
+                        modifier = Modifier
+                            .hintAnchor(actionHintAnchor, RoundedCornerShape(16.dp))
+                            .padding(4.dp),
+                        onClick = {
+                            coroutineScope.launch {
+                                hintController.show(
+                                    topAppBarActionHintAnchor,
+                                    actionHintAnchor,
+                                    bottomNavigationHintAnchor,
+                                )
+                            }
+                        },
+                    ) {
+                        Text("Default Tour")
+                    }
+
+                    Spacer(modifier = Modifier.size(16.dp))
+                    Text("Alignments showcase:", style = MaterialTheme.typography.h6)
+
+                    Row {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Button(
+                                modifier = Modifier.hintAnchor(topHintAnchor, CircleShape).padding(4.dp),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        hintController.show(topHintAnchor)
+                                    }
+                                }
+                            ) { Text("Top") }
+
+                            Button(
+                                modifier = Modifier.hintAnchor(bottomHintAnchor, CutCornerShape(8.dp)).padding(4.dp),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        hintController.show(bottomHintAnchor)
+                                    }
+                                }
+                            ) { Text("Bottom") }
                         }
-                    },
-                ) {
-                    Text("Action")
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Button(
+                                modifier = Modifier.hintAnchor(startHintAnchor, RoundedCornerShape(topStart = 16.dp)).padding(4.dp),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        hintController.show(startHintAnchor)
+                                    }
+                                }
+                            ) { Text("Start") }
+
+                            Button(
+                                modifier = Modifier.hintAnchor(endHintAnchor, RoundedCornerShape(bottomEnd = 16.dp)).padding(4.dp),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        hintController.show(endHintAnchor)
+                                    }
+                                }
+                            ) { Text("End") }
+                        }
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Button(
+                                modifier = Modifier.hintAnchor(centerHintAnchor, CircleShape).padding(4.dp),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        hintController.show(centerHintAnchor)
+                                    }
+                                }
+                            ) { Text("Center") }
+
+                            Button(
+                                modifier = Modifier.hintAnchor(overlapHintAnchor, RoundedCornerShape(0.dp)).padding(4.dp),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        hintController.show(overlapHintAnchor)
+                                    }
+                                }
+                            ) { Text("Overlap") }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.size(16.dp))
+                    Button(
+                        onClick = {
+                            coroutineScope.launch {
+                                hintController.show(
+                                    topHintAnchor,
+                                    bottomHintAnchor,
+                                    startHintAnchor,
+                                    endHintAnchor,
+                                    centerHintAnchor,
+                                    overlapHintAnchor
+                                )
+                            }
+                        }
+                    ) {
+                        Text("Show All Alignments Tour")
+                    }
                 }
             }
 
