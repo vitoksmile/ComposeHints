@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalInspectionMode
 
 /**
  * Custom layout to measure, place, and draw hints.
@@ -25,13 +26,22 @@ internal fun HintsContainer(
     activeAnchorIndex: Int,
     dismissCurrentHintOnClickOutside: () -> Unit,
 ) {
+    val isInspectionMode = LocalInspectionMode.current
     val visibleStates = remember {
         mutableStateMapOf<Hint, MutableTransitionState<Boolean>>()
     }
+
+    // Initialize states in composition pass to be ready for the first frame
+    anchors.forEachIndexed { index, anchor ->
+        visibleStates.getOrPut(anchor.hint) {
+            MutableTransitionState(initialState = isInspectionMode && index == activeAnchorIndex)
+        }
+    }
+
     LaunchedEffect(anchors, activeAnchorIndex) {
         anchors.forEachIndexed { index, anchor ->
             val state = visibleStates.getOrPut(anchor.hint) {
-                MutableTransitionState(initialState = false)
+                MutableTransitionState(initialState = isInspectionMode && index == activeAnchorIndex)
             }
             state.targetState = index == activeAnchorIndex
         }

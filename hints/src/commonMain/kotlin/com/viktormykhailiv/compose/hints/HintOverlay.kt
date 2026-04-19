@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.platform.LocalInspectionMode
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -24,12 +25,17 @@ internal fun HintOverlay(
     dismissCurrentHintOnClickOutside: () -> Unit,
     onBackClicked: () -> Unit,
 ) {
-    val visibleState = remember { MutableTransitionState<Boolean>(false) }
+    val isInspectionMode = LocalInspectionMode.current
+    val visibleState = remember {
+        MutableTransitionState<Boolean>(isInspectionMode && activeAnchorIndex >= 0)
+    }
     LaunchedEffect(activeAnchorIndex) {
         visibleState.targetState = activeAnchorIndex >= 0
     }
 
-    var showPopup by remember { mutableStateOf(false) }
+    var showPopup by remember {
+        mutableStateOf(isInspectionMode && activeAnchorIndex >= 0)
+    }
     LaunchedEffect(visibleState.currentState, visibleState.targetState, visibleState.isIdle) {
         showPopup = visibleState.currentState || visibleState.targetState ||
                 // Still show popup if exit animation is running
