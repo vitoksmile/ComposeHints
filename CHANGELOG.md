@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.2.1](https://github.com/vitoksmile/ComposeHints/releases/tag/2.2.1)
+
+*  Fixed missing anchor highlight (regression in 2.2.0)
+*  Added support for Compose screenshot tests
+
 ## [2.2.0](https://github.com/vitoksmile/ComposeHints/releases/tag/2.2.0)
 
 *  Kotlin 2.3.20 & Compose Multiplatform 1.10.3
