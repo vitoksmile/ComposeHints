@@ -27,36 +27,48 @@ import kotlin.coroutines.suspendCoroutine
 @Stable
 class HintController internal constructor() {
 
-    private val queue = mutableStateListOf<HintAnchorState>()
+    private val queue = mutableStateListOf<List<HintAnchorState>>()
 
-    internal val hints: List<HintAnchorState> get() = queue
+    internal val steps: List<List<HintAnchorState>> get() = queue
 
-    internal var activeAnchorIndex by mutableStateOf<Int>(-1)
+    internal var activeStepIndex by mutableStateOf<Int>(-1)
 
-    private val pendingRequests = mutableMapOf<HintAnchorState, Continuation<Unit>>()
+    private val pendingRequests = mutableMapOf<List<HintAnchorState>, Continuation<Unit>>()
 
-    suspend fun show(hint: HintAnchorState) {
-        suspendCoroutine { continuation ->
-            pendingRequests[hint] = continuation
-            queue.add(hint)
-            activeAnchorIndex = 0
-        }
+    /**
+     * Show a single hint with one anchor.
+     */
+    suspend fun show(anchor: HintAnchorState) {
+        show(listOf(listOf(anchor)))
     }
 
-    suspend fun show(vararg hint: HintAnchorState) {
-        if (hint.isEmpty()) throw IllegalArgumentException("Nothing to show")
+    /**
+     * Show a sequence of hints, each with one anchor.
+     */
+    suspend fun show(vararg anchors: HintAnchorState) {
+        if (anchors.isEmpty()) throw IllegalArgumentException("Nothing to show")
 
-        show(hint.toList())
+        show(anchors.map { listOf(it) })
     }
 
-    suspend fun show(hints: List<HintAnchorState>) {
-        if (hints.isEmpty()) throw IllegalArgumentException("Nothing to show")
+    /**
+     * Show a single hint with multiple anchors simultaneously.
+     */
+    suspend fun showGroup(anchors: List<HintAnchorState>) {
+        show(listOf(anchors))
+    }
+
+    /**
+     * Show a sequence of steps, where each step can have multiple anchors.
+     */
+    suspend fun show(steps: List<List<HintAnchorState>>) {
+        if (steps.isEmpty()) throw IllegalArgumentException("Nothing to show")
 
         suspendCoroutine { continuation ->
-            pendingRequests[hints.last()] = continuation
+            pendingRequests[steps.last()] = continuation
             queue.clear()
-            queue.addAll(hints)
-            activeAnchorIndex = 0
+            queue.addAll(steps)
+            activeStepIndex = 0
         }
     }
 
@@ -67,28 +79,31 @@ class HintController internal constructor() {
             }
         pendingRequests.clear()
         queue.clear()
-        activeAnchorIndex = -1
+        activeStepIndex = -1
     }
 
     internal fun dismissCurrentHintOnClickOutside() {
-        val hint = findCurrentHint() ?: return
+        val step = findCurrentStep() ?: return
 
-        if (hint.hint.properties.dismissOnClickOutside.not()) {
+        // All anchors in a step usually belong to the same hint. 
+        // We check the first one for dismiss properties.
+        val firstAnchor = step.firstOrNull() ?: return
+        if (firstAnchor.hint.properties.dismissOnClickOutside.not()) {
             // Hint not dismissable
             return
         }
 
-        activeAnchorIndex++
-        if (activeAnchorIndex >= queue.size) {
-            activeAnchorIndex = -1
+        activeStepIndex++
+        if (activeStepIndex >= queue.size) {
+            activeStepIndex = -1
         }
-        dismissCurrentHintOnClickOutside(hint)
+        dismissCurrentStep(step)
     }
 
-    internal fun dismissCurrentHintOnClickOutside(hint: HintAnchorState) {
-        pendingRequests[hint]?.let { continuation ->
+    private fun dismissCurrentStep(step: List<HintAnchorState>) {
+        pendingRequests[step]?.let { continuation ->
             continuation.resume(Unit)
-            pendingRequests.remove(hint)
+            pendingRequests.remove(step)
         }
         if (pendingRequests.isEmpty()) {
             queue.clear()
@@ -96,13 +111,14 @@ class HintController internal constructor() {
     }
 
     internal fun dismissAllHintsOnBackClicked() {
-        val hint = findCurrentHint()
+        val step = findCurrentStep()
             ?: run {
                 dismiss()
                 return
             }
 
-        if (hint.hint.properties.dismissOnBackPress.not()) {
+        val firstAnchor = step.firstOrNull() ?: return
+        if (firstAnchor.hint.properties.dismissOnBackPress.not()) {
             // Hint not dismissable
             return
         }
@@ -110,14 +126,14 @@ class HintController internal constructor() {
         dismiss()
     }
 
-    private fun findCurrentHint(): HintAnchorState? {
-        val index = activeAnchorIndex
+    private fun findCurrentStep(): List<HintAnchorState>? {
+        val index = activeStepIndex
             .takeIf { it >= 0 }
             ?: return null
 
         return queue.getOrNull(index)
             ?: run {
-                activeAnchorIndex = -1
+                activeStepIndex = -1
                 null
             }
     }
@@ -183,8 +199,8 @@ private fun rememberHintController(
         LocalAnchorOffsetAnimationSpec provides anchorOffsetAnimationSpec,
     ) {
         HintOverlay(
-            anchors = controller.hints,
-            activeAnchorIndex = controller.activeAnchorIndex,
+            steps = controller.steps,
+            activeStepIndex = controller.activeStepIndex,
             dismissCurrentHintOnClickOutside = controller::dismissCurrentHintOnClickOutside,
             onBackClicked = controller::dismissAllHintsOnBackClicked,
         )

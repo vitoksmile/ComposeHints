@@ -20,21 +20,21 @@ import androidx.compose.ui.platform.LocalInspectionMode
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun HintOverlay(
-    anchors: List<HintAnchorState>,
-    activeAnchorIndex: Int,
+    steps: List<List<HintAnchorState>>,
+    activeStepIndex: Int,
     dismissCurrentHintOnClickOutside: () -> Unit,
     onBackClicked: () -> Unit,
 ) {
     val isInspectionMode = LocalInspectionMode.current
     val visibleState = remember {
-        MutableTransitionState<Boolean>(isInspectionMode && activeAnchorIndex >= 0)
+        MutableTransitionState<Boolean>(isInspectionMode && activeStepIndex >= 0)
     }
-    LaunchedEffect(activeAnchorIndex) {
-        visibleState.targetState = activeAnchorIndex >= 0
+    LaunchedEffect(activeStepIndex) {
+        visibleState.targetState = activeStepIndex >= 0
     }
 
     var showPopup by remember {
-        mutableStateOf(isInspectionMode && activeAnchorIndex >= 0)
+        mutableStateOf(isInspectionMode && activeStepIndex >= 0)
     }
     LaunchedEffect(visibleState.currentState, visibleState.targetState, visibleState.isIdle) {
         showPopup = visibleState.currentState || visibleState.targetState ||
@@ -73,8 +73,8 @@ internal fun HintOverlay(
             ) {
                 HintsContainer(
                     modifier = Modifier.fillMaxSize(),
-                    anchors = anchors,
-                    activeAnchorIndex = activeAnchorIndex,
+                    steps = steps,
+                    activeStepIndex = activeStepIndex,
                     dismissCurrentHintOnClickOutside = dismissCurrentHintOnClickOutside,
                 )
             }

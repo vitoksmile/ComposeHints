@@ -35,8 +35,8 @@ val LocalHintOverlayBrush = staticCompositionLocalOf<Brush?> { null }
  * Set `background` either from [LocalHintOverlayBrush] or from [LocalHintOverlayColor].
  */
 internal fun Modifier.overlayBackground(
-    anchors: List<HintAnchorState>,
-    activeAnchorIndex: Int,
+    steps: List<List<HintAnchorState>>,
+    activeStepIndex: Int,
 ): Modifier = composed {
     val backgroundBrush = LocalHintOverlayBrush.current
     val backgroundColor = LocalHintOverlayColor.current
@@ -49,80 +49,87 @@ internal fun Modifier.overlayBackground(
     val anchorSizeAnimationSpec = LocalAnchorSizeAnimationSpec.current
     val anchorOffsetAnimationSpec = LocalAnchorOffsetAnimationSpec.current
 
-    val sizes = remember { mutableStateMapOf<Hint, Animatable<Size, AnimationVector2D>>() }
-    val offsets = remember { mutableStateMapOf<Hint, Animatable<Offset, AnimationVector2D>>() }
+    val sizes = remember { mutableStateMapOf<HintAnchorState, Animatable<Size, AnimationVector2D>>() }
+    val offsets = remember { mutableStateMapOf<HintAnchorState, Animatable<Offset, AnimationVector2D>>() }
 
-    val currentAnchor = anchors.getOrNull(activeAnchorIndex)
-    if (currentAnchor != null) {
-        sizes.getOrPut(currentAnchor.hint) {
+    val currentStep = steps.getOrNull(activeStepIndex) ?: emptyList()
+    val previousStep = steps.getOrNull(activeStepIndex - 1) ?: emptyList()
+
+    for (anchor in currentStep) {
+        sizes.getOrPut(anchor) {
             Animatable(
-                initialValue = if (isInspectionMode) currentAnchor.size.toSize() else Size.Zero,
+                initialValue = if (isInspectionMode) anchor.size.toSize() else Size.Zero,
                 typeConverter = Size.VectorConverter,
             )
         }
-        offsets.getOrPut(currentAnchor.hint) {
+        offsets.getOrPut(anchor) {
             Animatable(
-                initialValue = if (isInspectionMode) currentAnchor.offset else Offset.Zero,
+                initialValue = if (isInspectionMode) anchor.offset else Offset.Zero,
                 typeConverter = Offset.VectorConverter,
             )
         }
     }
 
-    LaunchedEffect(activeAnchorIndex, anchors, currentAnchor?.offset, currentAnchor?.size) {
-        val anchor = currentAnchor ?: return@LaunchedEffect
-        val sizeAnimatable = sizes[anchor.hint] ?: return@LaunchedEffect
-        val offsetAnimatable = offsets[anchor.hint] ?: return@LaunchedEffect
+    LaunchedEffect(activeStepIndex, steps) {
+        val currentStep = steps.getOrNull(activeStepIndex) ?: return@LaunchedEffect
+        val previousStep = steps.getOrNull(activeStepIndex - 1) ?: emptyList()
 
-        launch {
-            if (anchorAnimationMode == HintAnchorAnimationMode.Follow && activeAnchorIndex != 0) {
-                val previousAnchor = anchors.getOrNull(activeAnchorIndex - 1)
-                if (previousAnchor != null && !sizeAnimatable.isRunning) {
-                    sizeAnimatable.snapTo(previousAnchor.size.toSize())
+        for ((index, anchor) in currentStep.withIndex()) {
+            val sizeAnimatable = sizes[anchor] ?: continue
+            val offsetAnimatable = offsets[anchor] ?: continue
+
+            launch {
+                if (anchorAnimationMode == HintAnchorAnimationMode.Follow && activeStepIndex != 0) {
+                    // Try to follow the corresponding anchor from previous step, or just the first one
+                    val previousAnchor = previousStep.getOrNull(index) ?: previousStep.getOrNull(0)
+                    if (previousAnchor != null && !sizeAnimatable.isRunning) {
+                        sizeAnimatable.snapTo(previousAnchor.size.toSize())
+                    }
                 }
+
+                sizeAnimatable.animateTo(
+                    targetValue = anchor.size.toSize(),
+                    animationSpec = anchor.sizeAnimationSpec ?: anchorSizeAnimationSpec,
+                )
             }
 
-            sizeAnimatable.animateTo(
-                targetValue = anchor.size.toSize(),
-                animationSpec = anchor.sizeAnimationSpec ?: anchorSizeAnimationSpec,
-            )
-        }
-
-        launch {
-            when {
-                anchorAnimationMode == HintAnchorAnimationMode.Scale -> {
-                    if (!offsetAnimatable.isRunning) {
-                        offsetAnimatable.snapTo(
-                            anchor.offset.copy(
-                                x = anchor.offset.x + anchor.size.width / 2,
-                                y = anchor.offset.y + anchor.size.height / 2,
+            launch {
+                when {
+                    anchorAnimationMode == HintAnchorAnimationMode.Scale -> {
+                        if (!offsetAnimatable.isRunning) {
+                            offsetAnimatable.snapTo(
+                                anchor.offset.copy(
+                                    x = anchor.offset.x + anchor.size.width / 2,
+                                    y = anchor.offset.y + anchor.size.height / 2,
+                                )
                             )
-                        )
+                        }
                     }
-                }
 
-                activeAnchorIndex == 0 -> {
-                    if (!offsetAnimatable.isRunning) {
-                        offsetAnimatable.snapTo(
-                            anchor.offset.copy(
-                                x = anchor.offset.x + anchor.size.width / 2,
-                                y = anchor.offset.y + anchor.size.height / 2,
+                    activeStepIndex == 0 -> {
+                        if (!offsetAnimatable.isRunning) {
+                            offsetAnimatable.snapTo(
+                                anchor.offset.copy(
+                                    x = anchor.offset.x + anchor.size.width / 2,
+                                    y = anchor.offset.y + anchor.size.height / 2,
+                                )
                             )
-                        )
+                        }
+                    }
+
+                    else -> {
+                        val previousAnchor = previousStep.getOrNull(index) ?: previousStep.getOrNull(0)
+                        if (previousAnchor != null && !offsetAnimatable.isRunning) {
+                            offsetAnimatable.snapTo(previousAnchor.offset)
+                        }
                     }
                 }
 
-                else -> {
-                    val previousAnchor = anchors.getOrNull(activeAnchorIndex - 1)
-                    if (previousAnchor != null && !offsetAnimatable.isRunning) {
-                        offsetAnimatable.snapTo(previousAnchor.offset)
-                    }
-                }
+                offsetAnimatable.animateTo(
+                    targetValue = anchor.offset,
+                    animationSpec = anchor.offsetAnimationSpec ?: anchorOffsetAnimationSpec,
+                )
             }
-
-            offsetAnimatable.animateTo(
-                targetValue = anchor.offset,
-                animationSpec = anchor.offsetAnimationSpec ?: anchorOffsetAnimationSpec,
-            )
         }
     }
     // endregion
@@ -137,25 +144,28 @@ internal fun Modifier.overlayBackground(
             close()
         }
 
-        val anchor = anchors.getOrNull(activeAnchorIndex)
-        val sizeAnim = anchor?.let { sizes[it.hint] }
-        val offsetAnim = anchor?.let { offsets[it.hint] }
+        val activeStep = steps.getOrNull(activeStepIndex) ?: emptyList()
 
-        if (anchor != null && sizeAnim != null && offsetAnim != null) {
-            // Prepare path for the anchor
-            val anchorPath = Path()
-            anchorPath.addOutline(
-                anchor.shape.createOutline(
-                    size = sizeAnim.value,
-                    layoutDirection = layoutDirection,
-                    density = density,
+        for (anchor in activeStep) {
+            val sizeAnim = sizes[anchor]
+            val offsetAnim = offsets[anchor]
+
+            if (sizeAnim != null && offsetAnim != null) {
+                // Prepare path for the anchor
+                val anchorPath = Path()
+                anchorPath.addOutline(
+                    anchor.shape.createOutline(
+                        size = sizeAnim.value,
+                        layoutDirection = layoutDirection,
+                        density = density,
+                    )
                 )
-            )
-            anchorPath.translate(offsetAnim.value)
-            anchorPath.close()
+                anchorPath.translate(offsetAnim.value)
+                anchorPath.close()
 
-            // Clip out the anchor
-            path.op(path, anchorPath, PathOperation.Xor)
+                // Clip out the anchor
+                path.op(path, anchorPath, PathOperation.Xor)
+            }
         }
 
         onDrawWithContent {

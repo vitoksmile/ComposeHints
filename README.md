@@ -96,6 +96,14 @@ hintController.show(
 )
 ```
 
+### Multiple Anchors per Hint
+
+You can highlight multiple UI elements simultaneously for a single explanation using `showGroup`. The hint will automatically position itself relative to the collective bounding box of all active anchors.
+
+```kotlin
+hintController.showGroup(listOf(anchor1, anchor2))
+```
+
 ### Hint style
 
 There are no limitations how your hints can look like. ComposeHints library uses "slot" approach

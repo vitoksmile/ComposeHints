@@ -360,6 +360,17 @@ private fun AppInternal() {
                     Button(
                         onClick = {
                             coroutineScope.launch {
+                                hintController.showGroup(listOf(topHintAnchor, bottomHintAnchor))
+                            }
+                        }
+                    ) {
+                        Text("Multi-Anchor Showcase (Top + Bottom)")
+                    }
+
+                    Spacer(modifier = Modifier.size(16.dp))
+                    Button(
+                        onClick = {
+                            coroutineScope.launch {
                                 hintController.show(
                                     topHintAnchor,
                                     bottomHintAnchor,
