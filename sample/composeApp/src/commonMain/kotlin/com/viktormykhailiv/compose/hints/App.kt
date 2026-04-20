@@ -6,11 +6,14 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -89,26 +92,61 @@ private fun AppInternal() {
             offset = DpOffset(x = 0.dp, y = 8.dp),
         ),
     ) {
-        Column {
+        Column(modifier = Modifier.width(IntrinsicSize.Max)) {
             Text("Hint for TopAppBar")
             Text("* click outside to dismiss current hint")
             Text("* click/swipe back to dismiss is disabled")
 
-            OutlinedButton(
-                modifier = Modifier.padding(top = 8.dp),
-                onClick = { hintController.dismiss() },
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text("Dismiss all hints")
+                OutlinedButton(
+                    onClick = { hintController.dismiss() },
+                ) {
+                    Text("Dismiss all")
+                }
+
+                Box(modifier = Modifier.weight(1f))
+
+                if (hintController.totalStepsCount > 1) {
+                    Button(
+                        onClick = { hintController.next() }
+                    ) {
+                        Text(if (hintController.hasNext) "Next" else "Finish")
+                    }
+                }
             }
         }
     }
     val topAppBarActionHintAnchor = rememberHintAnchorState(topAppBarHint)
 
     val actionHint = rememberHintContainer {
-        Column {
+        Column(modifier = Modifier.width(IntrinsicSize.Max)) {
             Text("Hint for Action")
             Text("* click outside to dismiss current hint")
             Text("* click/swipe back to dismiss all hints")
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (hintController.hasPrevious) {
+                    OutlinedButton(
+                        onClick = { hintController.previous() }
+                    ) {
+                        Text("Back")
+                    }
+                }
+
+                Box(modifier = Modifier.weight(1f))
+
+                Button(
+                    onClick = { hintController.next() }
+                ) {
+                    Text(if (hintController.hasNext) "Next" else "Finish")
+                }
+            }
         }
     }
     val actionHintAnchor = rememberHintAnchorState(actionHint)
@@ -127,11 +165,32 @@ private fun AppInternal() {
             )
 
             Column(
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier.width(IntrinsicSize.Max).padding(horizontal = 8.dp),
             ) {
                 Text("Hint for BottomNavigation")
                 Text("* click outside is disabled")
                 Text("* click/swipe back to dismiss current hint")
+
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    if (hintController.hasPrevious) {
+                        OutlinedButton(
+                            onClick = { hintController.previous() }
+                        ) {
+                            Text("Back")
+                        }
+                    }
+
+                    Box(modifier = Modifier.weight(1f))
+
+                    Button(
+                        onClick = { hintController.next() }
+                    ) {
+                        Text(if (hintController.hasNext) "Next" else "Finish")
+                    }
+                }
             }
 
             IconButton(

@@ -83,22 +83,61 @@ Button(
 
 ## Customizations
 
-### Show many hints
+### Show many hints (Sequences)
 
-You are not limited in showing only 1 hint, HintController allows you to show either 1 or many hints
-sequentially.
+You are not limited in showing only 1 hint. `HintController` allows you to show a sequence of hints 
+that the user can navigate through. The `show` function is a **suspend** function that resumes only 
+after the entire sequence is completed or dismissed.
 
 ```kotlin
-hintController.show(
-    topAppBarActionHintAnchor,
-    actionHintAnchor,
-    bottomNavigationHintAnchor,
-)
+coroutineScope.launch {
+    hintController.show(
+        topAppBarActionHintAnchor,
+        actionHintAnchor,
+        bottomNavigationHintAnchor,
+    )
+    // Resumes here after all hints in the sequence are dismissed
+}
 ```
+
+#### Sequence Navigation
+
+You can manually control the sequence navigation using `next()` and `previous()` methods. This is 
+useful for building "Next" and "Back" buttons within your hint UI. `HintController` also provides 
+state properties to help you build the navigation UI.
+
+```kotlin
+val hint = rememberHint {
+    Column {
+        Text("Step ${hintController.currentStepIndex + 1} of ${hintController.totalStepsCount}")
+        
+        Row {
+            if (hintController.hasPrevious) {
+                OutlinedButton(onClick = { hintController.previous() }) {
+                    Text("Back")
+                }
+            }
+            
+            Button(onClick = { hintController.next() }) {
+                Text(if (hintController.hasNext) "Next" else "Finish")
+            }
+        }
+    }
+}
+```
+
+- `next()`: Moves to the next hint. If it's the last one, dismisses the sequence.
+- `previous()`: Moves to the previous hint.
+- `currentStepIndex`: 0-based index of the current hint.
+- `totalStepsCount`: Total number of steps in the active sequence.
+- `hasNext` / `hasPrevious`: Helper properties for UI logic.
+- `dismiss()`: Immediately dismisses the entire sequence.
 
 ### Multiple Anchors per Hint
 
-You can highlight multiple UI elements simultaneously for a single explanation using `showGroup`. The hint will automatically position itself relative to the collective bounding box of all active anchors.
+You can highlight multiple UI elements simultaneously for a single explanation using `showGroup`. 
+The hint will automatically position itself relative to the collective bounding box of all 
+active anchors.
 
 ```kotlin
 hintController.showGroup(listOf(anchor1, anchor2))
@@ -178,10 +217,13 @@ You can choose from several alignment strategies:
 - **Specific**: `TopStart`, `TopEnd`, `BottomStart`, `BottomEnd`, `StartTop`, `StartBottom`, `EndTop`, `EndBottom`.
 
 #### Smart Flipping
-If a hint is set to `Top` but there isn't enough space above the anchor, the library will automatically flip it to the `Bottom` to ensure it remains visible. This works for all specific alignments as well (e.g., `EndTop` will flip to `StartTop` if it hits the screen edge).
+If a hint is set to `Top` but there isn't enough space above the anchor, the library will 
+automatically flip it to the `Bottom` to ensure it remains visible. This works for all specific 
+alignments as well (e.g., `EndTop` will flip to `StartTop` if it hits the screen edge).
 
 #### RTL Awareness
-Alignments like `Start` and `End` are automatically mirrored in Right-to-Left (RTL) layouts, so your onboarding flows will look correct for all users without any extra code.
+Alignments like `Start` and `End` are automatically mirrored in Right-to-Left (RTL) layouts, so 
+your onboarding flows will look correct for all users without any extra code.
 
 ### Overlay color
 

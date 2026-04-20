@@ -8,6 +8,26 @@ public final class com/viktormykhailiv/compose/hints/Hint {
 	public static final field $stable I
 }
 
+public final class com/viktormykhailiv/compose/hints/HintAlignment : java/lang/Enum {
+	public static final field Bottom Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field BottomEnd Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field BottomStart Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field Center Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field End Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field EndBottom Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field EndTop Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field Overlap Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field Start Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field StartBottom Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field StartTop Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field Top Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field TopEnd Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static final field TopStart Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public static fun values ()[Lcom/viktormykhailiv/compose/hints/HintAlignment;
+}
+
 public final class com/viktormykhailiv/compose/hints/HintAnchorAnimationMode : java/lang/Enum {
 	public static final field Follow Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;
 	public static final field Scale Lcom/viktormykhailiv/compose/hints/HintAnchorAnimationMode;
@@ -47,9 +67,16 @@ public final class com/viktormykhailiv/compose/hints/HintAnimationDefaultsKt {
 public final class com/viktormykhailiv/compose/hints/HintController {
 	public static final field $stable I
 	public final fun dismiss ()V
+	public final fun getCurrentStepIndex ()I
+	public final fun getHasNext ()Z
+	public final fun getHasPrevious ()Z
+	public final fun getTotalStepsCount ()I
+	public final fun next ()V
+	public final fun previous ()V
 	public final fun show (Lcom/viktormykhailiv/compose/hints/HintAnchorState;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun show (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun show ([Lcom/viktormykhailiv/compose/hints/HintAnchorState;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun showGroup (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/viktormykhailiv/compose/hints/HintControllerKt {
@@ -72,16 +99,21 @@ public final class com/viktormykhailiv/compose/hints/HintOverlayBackgroundKt {
 
 public final class com/viktormykhailiv/compose/hints/HintProperties {
 	public static final field $stable I
-	public fun <init> ()V
-	public fun <init> (ZZ)V
-	public synthetic fun <init> (ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Z
 	public final fun component2 ()Z
-	public final fun copy (ZZ)Lcom/viktormykhailiv/compose/hints/HintProperties;
-	public static synthetic fun copy$default (Lcom/viktormykhailiv/compose/hints/HintProperties;ZZILjava/lang/Object;)Lcom/viktormykhailiv/compose/hints/HintProperties;
+	public final fun component3 ()Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public final fun component4-D9Ej5fM ()F
+	public final fun component5-RKDOV3M ()J
+	public final fun copy-TYChy4o (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FJ)Lcom/viktormykhailiv/compose/hints/HintProperties;
+	public static synthetic fun copy-TYChy4o$default (Lcom/viktormykhailiv/compose/hints/HintProperties;ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FJILjava/lang/Object;)Lcom/viktormykhailiv/compose/hints/HintProperties;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlignment ()Lcom/viktormykhailiv/compose/hints/HintAlignment;
 	public final fun getDismissOnBackPress ()Z
 	public final fun getDismissOnClickOutside ()Z
+	public final fun getOffset-RKDOV3M ()J
+	public final fun getPadding-D9Ej5fM ()F
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

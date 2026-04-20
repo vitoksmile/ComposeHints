@@ -6,6 +6,29 @@
 // - Show declarations: true
 
 // Library unique name: <ComposeHints:hints>
+final enum class com.viktormykhailiv.compose.hints/HintAlignment : kotlin/Enum<com.viktormykhailiv.compose.hints/HintAlignment> { // com.viktormykhailiv.compose.hints/HintAlignment|null[0]
+    enum entry Bottom // com.viktormykhailiv.compose.hints/HintAlignment.Bottom|null[0]
+    enum entry BottomEnd // com.viktormykhailiv.compose.hints/HintAlignment.BottomEnd|null[0]
+    enum entry BottomStart // com.viktormykhailiv.compose.hints/HintAlignment.BottomStart|null[0]
+    enum entry Center // com.viktormykhailiv.compose.hints/HintAlignment.Center|null[0]
+    enum entry End // com.viktormykhailiv.compose.hints/HintAlignment.End|null[0]
+    enum entry EndBottom // com.viktormykhailiv.compose.hints/HintAlignment.EndBottom|null[0]
+    enum entry EndTop // com.viktormykhailiv.compose.hints/HintAlignment.EndTop|null[0]
+    enum entry Overlap // com.viktormykhailiv.compose.hints/HintAlignment.Overlap|null[0]
+    enum entry Start // com.viktormykhailiv.compose.hints/HintAlignment.Start|null[0]
+    enum entry StartBottom // com.viktormykhailiv.compose.hints/HintAlignment.StartBottom|null[0]
+    enum entry StartTop // com.viktormykhailiv.compose.hints/HintAlignment.StartTop|null[0]
+    enum entry Top // com.viktormykhailiv.compose.hints/HintAlignment.Top|null[0]
+    enum entry TopEnd // com.viktormykhailiv.compose.hints/HintAlignment.TopEnd|null[0]
+    enum entry TopStart // com.viktormykhailiv.compose.hints/HintAlignment.TopStart|null[0]
+
+    final val entries // com.viktormykhailiv.compose.hints/HintAlignment.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.viktormykhailiv.compose.hints/HintAlignment> // com.viktormykhailiv.compose.hints/HintAlignment.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.viktormykhailiv.compose.hints/HintAlignment // com.viktormykhailiv.compose.hints/HintAlignment.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.viktormykhailiv.compose.hints/HintAlignment> // com.viktormykhailiv.compose.hints/HintAlignment.values|values#static(){}[0]
+}
+
 final enum class com.viktormykhailiv.compose.hints/HintAnchorAnimationMode : kotlin/Enum<com.viktormykhailiv.compose.hints/HintAnchorAnimationMode> { // com.viktormykhailiv.compose.hints/HintAnchorAnimationMode|null[0]
     enum entry Follow // com.viktormykhailiv.compose.hints/HintAnchorAnimationMode.Follow|null[0]
     enum entry Scale // com.viktormykhailiv.compose.hints/HintAnchorAnimationMode.Scale|null[0]
@@ -22,23 +45,44 @@ final class com.viktormykhailiv.compose.hints/Hint // com.viktormykhailiv.compos
 final class com.viktormykhailiv.compose.hints/HintAnchorState // com.viktormykhailiv.compose.hints/HintAnchorState|null[0]
 
 final class com.viktormykhailiv.compose.hints/HintController { // com.viktormykhailiv.compose.hints/HintController|null[0]
+    final val currentStepIndex // com.viktormykhailiv.compose.hints/HintController.currentStepIndex|{}currentStepIndex[0]
+        final fun <get-currentStepIndex>(): kotlin/Int // com.viktormykhailiv.compose.hints/HintController.currentStepIndex.<get-currentStepIndex>|<get-currentStepIndex>(){}[0]
+    final val hasNext // com.viktormykhailiv.compose.hints/HintController.hasNext|{}hasNext[0]
+        final fun <get-hasNext>(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintController.hasNext.<get-hasNext>|<get-hasNext>(){}[0]
+    final val hasPrevious // com.viktormykhailiv.compose.hints/HintController.hasPrevious|{}hasPrevious[0]
+        final fun <get-hasPrevious>(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintController.hasPrevious.<get-hasPrevious>|<get-hasPrevious>(){}[0]
+    final val totalStepsCount // com.viktormykhailiv.compose.hints/HintController.totalStepsCount|{}totalStepsCount[0]
+        final fun <get-totalStepsCount>(): kotlin/Int // com.viktormykhailiv.compose.hints/HintController.totalStepsCount.<get-totalStepsCount>|<get-totalStepsCount>(){}[0]
+
     final fun dismiss() // com.viktormykhailiv.compose.hints/HintController.dismiss|dismiss(){}[0]
+    final fun next() // com.viktormykhailiv.compose.hints/HintController.next|next(){}[0]
+    final fun previous() // com.viktormykhailiv.compose.hints/HintController.previous|previous(){}[0]
     final suspend fun show(com.viktormykhailiv.compose.hints/HintAnchorState) // com.viktormykhailiv.compose.hints/HintController.show|show(com.viktormykhailiv.compose.hints.HintAnchorState){}[0]
-    final suspend fun show(kotlin.collections/List<com.viktormykhailiv.compose.hints/HintAnchorState>) // com.viktormykhailiv.compose.hints/HintController.show|show(kotlin.collections.List<com.viktormykhailiv.compose.hints.HintAnchorState>){}[0]
+    final suspend fun show(kotlin.collections/List<kotlin.collections/List<com.viktormykhailiv.compose.hints/HintAnchorState>>) // com.viktormykhailiv.compose.hints/HintController.show|show(kotlin.collections.List<kotlin.collections.List<com.viktormykhailiv.compose.hints.HintAnchorState>>){}[0]
     final suspend fun show(kotlin/Array<out com.viktormykhailiv.compose.hints/HintAnchorState>...) // com.viktormykhailiv.compose.hints/HintController.show|show(kotlin.Array<out|com.viktormykhailiv.compose.hints.HintAnchorState>...){}[0]
+    final suspend fun showGroup(kotlin.collections/List<com.viktormykhailiv.compose.hints/HintAnchorState>) // com.viktormykhailiv.compose.hints/HintController.showGroup|showGroup(kotlin.collections.List<com.viktormykhailiv.compose.hints.HintAnchorState>){}[0]
 }
 
 final class com.viktormykhailiv.compose.hints/HintProperties { // com.viktormykhailiv.compose.hints/HintProperties|null[0]
-    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ...) // com.viktormykhailiv.compose.hints/HintProperties.<init>|<init>(kotlin.Boolean;kotlin.Boolean){}[0]
+    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ..., com.viktormykhailiv.compose.hints/HintAlignment = ..., androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/DpOffset = ...) // com.viktormykhailiv.compose.hints/HintProperties.<init>|<init>(kotlin.Boolean;kotlin.Boolean;com.viktormykhailiv.compose.hints.HintAlignment;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.DpOffset){}[0]
 
+    final val alignment // com.viktormykhailiv.compose.hints/HintProperties.alignment|{}alignment[0]
+        final fun <get-alignment>(): com.viktormykhailiv.compose.hints/HintAlignment // com.viktormykhailiv.compose.hints/HintProperties.alignment.<get-alignment>|<get-alignment>(){}[0]
     final val dismissOnBackPress // com.viktormykhailiv.compose.hints/HintProperties.dismissOnBackPress|{}dismissOnBackPress[0]
         final fun <get-dismissOnBackPress>(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.dismissOnBackPress.<get-dismissOnBackPress>|<get-dismissOnBackPress>(){}[0]
     final val dismissOnClickOutside // com.viktormykhailiv.compose.hints/HintProperties.dismissOnClickOutside|{}dismissOnClickOutside[0]
         final fun <get-dismissOnClickOutside>(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.dismissOnClickOutside.<get-dismissOnClickOutside>|<get-dismissOnClickOutside>(){}[0]
+    final val offset // com.viktormykhailiv.compose.hints/HintProperties.offset|{}offset[0]
+        final fun <get-offset>(): androidx.compose.ui.unit/DpOffset // com.viktormykhailiv.compose.hints/HintProperties.offset.<get-offset>|<get-offset>(){}[0]
+    final val padding // com.viktormykhailiv.compose.hints/HintProperties.padding|{}padding[0]
+        final fun <get-padding>(): androidx.compose.ui.unit/Dp // com.viktormykhailiv.compose.hints/HintProperties.padding.<get-padding>|<get-padding>(){}[0]
 
     final fun component1(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.component1|component1(){}[0]
     final fun component2(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.component2|component2(){}[0]
-    final fun copy(kotlin/Boolean = ..., kotlin/Boolean = ...): com.viktormykhailiv.compose.hints/HintProperties // com.viktormykhailiv.compose.hints/HintProperties.copy|copy(kotlin.Boolean;kotlin.Boolean){}[0]
+    final fun component3(): com.viktormykhailiv.compose.hints/HintAlignment // com.viktormykhailiv.compose.hints/HintProperties.component3|component3(){}[0]
+    final fun component4(): androidx.compose.ui.unit/Dp // com.viktormykhailiv.compose.hints/HintProperties.component4|component4(){}[0]
+    final fun component5(): androidx.compose.ui.unit/DpOffset // com.viktormykhailiv.compose.hints/HintProperties.component5|component5(){}[0]
+    final fun copy(kotlin/Boolean = ..., kotlin/Boolean = ..., com.viktormykhailiv.compose.hints/HintAlignment = ..., androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/DpOffset = ...): com.viktormykhailiv.compose.hints/HintProperties // com.viktormykhailiv.compose.hints/HintProperties.copy|copy(kotlin.Boolean;kotlin.Boolean;com.viktormykhailiv.compose.hints.HintAlignment;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.DpOffset){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.viktormykhailiv.compose.hints/HintProperties.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // com.viktormykhailiv.compose.hints/HintProperties.toString|toString(){}[0]

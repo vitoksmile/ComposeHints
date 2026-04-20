@@ -33,6 +33,26 @@ class HintController internal constructor() {
 
     internal var activeStepIndex by mutableStateOf<Int>(-1)
 
+    /**
+     * The index of the currently active step, or -1 if no hints are showing.
+     */
+    val currentStepIndex: Int get() = activeStepIndex
+
+    /**
+     * The total number of steps in the current sequence.
+     */
+    val totalStepsCount: Int get() = queue.size
+
+    /**
+     * Whether there is a next hint in the sequence.
+     */
+    val hasNext: Boolean get() = activeStepIndex != -1 && activeStepIndex < queue.size - 1
+
+    /**
+     * Whether there is a previous hint in the sequence.
+     */
+    val hasPrevious: Boolean get() = activeStepIndex > 0
+
     private val pendingRequests = mutableMapOf<List<HintAnchorState>, Continuation<Unit>>()
 
     /**
@@ -69,6 +89,30 @@ class HintController internal constructor() {
             queue.clear()
             queue.addAll(steps)
             activeStepIndex = 0
+        }
+    }
+
+    /**
+     * Move to the next hint in the sequence.
+     * If this is the last hint, the sequence will be finished and dismissed.
+     */
+    fun next() {
+        val step = findCurrentStep() ?: return
+
+        activeStepIndex++
+        if (activeStepIndex >= queue.size) {
+            activeStepIndex = -1
+        }
+        dismissCurrentStep(step)
+    }
+
+    /**
+     * Move to the previous hint in the sequence.
+     * Does nothing if this is the first hint or no hints are showing.
+     */
+    fun previous() {
+        if (activeStepIndex > 0) {
+            activeStepIndex--
         }
     }
 
