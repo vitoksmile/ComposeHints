@@ -64,7 +64,7 @@ final class com.viktormykhailiv.compose.hints/HintController { // com.viktormykh
 }
 
 final class com.viktormykhailiv.compose.hints/HintProperties { // com.viktormykhailiv.compose.hints/HintProperties|null[0]
-    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ..., com.viktormykhailiv.compose.hints/HintAlignment = ..., androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/DpOffset = ...) // com.viktormykhailiv.compose.hints/HintProperties.<init>|<init>(kotlin.Boolean;kotlin.Boolean;com.viktormykhailiv.compose.hints.HintAlignment;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.DpOffset){}[0]
+    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ..., com.viktormykhailiv.compose.hints/HintAlignment = ..., androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/DpOffset = ...) // com.viktormykhailiv.compose.hints/HintProperties.<init>|<init>(kotlin.Boolean;kotlin.Boolean;com.viktormykhailiv.compose.hints.HintAlignment;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.DpOffset){}[0]
 
     final val alignment // com.viktormykhailiv.compose.hints/HintProperties.alignment|{}alignment[0]
         final fun <get-alignment>(): com.viktormykhailiv.compose.hints/HintAlignment // com.viktormykhailiv.compose.hints/HintProperties.alignment.<get-alignment>|<get-alignment>(){}[0]
@@ -72,6 +72,8 @@ final class com.viktormykhailiv.compose.hints/HintProperties { // com.viktormykh
         final fun <get-dismissOnBackPress>(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.dismissOnBackPress.<get-dismissOnBackPress>|<get-dismissOnBackPress>(){}[0]
     final val dismissOnClickOutside // com.viktormykhailiv.compose.hints/HintProperties.dismissOnClickOutside|{}dismissOnClickOutside[0]
         final fun <get-dismissOnClickOutside>(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.dismissOnClickOutside.<get-dismissOnClickOutside>|<get-dismissOnClickOutside>(){}[0]
+    final val holePadding // com.viktormykhailiv.compose.hints/HintProperties.holePadding|{}holePadding[0]
+        final fun <get-holePadding>(): androidx.compose.ui.unit/Dp // com.viktormykhailiv.compose.hints/HintProperties.holePadding.<get-holePadding>|<get-holePadding>(){}[0]
     final val offset // com.viktormykhailiv.compose.hints/HintProperties.offset|{}offset[0]
         final fun <get-offset>(): androidx.compose.ui.unit/DpOffset // com.viktormykhailiv.compose.hints/HintProperties.offset.<get-offset>|<get-offset>(){}[0]
     final val padding // com.viktormykhailiv.compose.hints/HintProperties.padding|{}padding[0]
@@ -81,8 +83,9 @@ final class com.viktormykhailiv.compose.hints/HintProperties { // com.viktormykh
     final fun component2(): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.component2|component2(){}[0]
     final fun component3(): com.viktormykhailiv.compose.hints/HintAlignment // com.viktormykhailiv.compose.hints/HintProperties.component3|component3(){}[0]
     final fun component4(): androidx.compose.ui.unit/Dp // com.viktormykhailiv.compose.hints/HintProperties.component4|component4(){}[0]
-    final fun component5(): androidx.compose.ui.unit/DpOffset // com.viktormykhailiv.compose.hints/HintProperties.component5|component5(){}[0]
-    final fun copy(kotlin/Boolean = ..., kotlin/Boolean = ..., com.viktormykhailiv.compose.hints/HintAlignment = ..., androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/DpOffset = ...): com.viktormykhailiv.compose.hints/HintProperties // com.viktormykhailiv.compose.hints/HintProperties.copy|copy(kotlin.Boolean;kotlin.Boolean;com.viktormykhailiv.compose.hints.HintAlignment;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.DpOffset){}[0]
+    final fun component5(): androidx.compose.ui.unit/Dp // com.viktormykhailiv.compose.hints/HintProperties.component5|component5(){}[0]
+    final fun component6(): androidx.compose.ui.unit/DpOffset // com.viktormykhailiv.compose.hints/HintProperties.component6|component6(){}[0]
+    final fun copy(kotlin/Boolean = ..., kotlin/Boolean = ..., com.viktormykhailiv.compose.hints/HintAlignment = ..., androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/DpOffset = ...): com.viktormykhailiv.compose.hints/HintProperties // com.viktormykhailiv.compose.hints/HintProperties.copy|copy(kotlin.Boolean;kotlin.Boolean;com.viktormykhailiv.compose.hints.HintAlignment;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.DpOffset){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.viktormykhailiv.compose.hints/HintProperties.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.viktormykhailiv.compose.hints/HintProperties.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // com.viktormykhailiv.compose.hints/HintProperties.toString|toString(){}[0]

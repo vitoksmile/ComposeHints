@@ -80,17 +80,27 @@ internal fun Modifier.overlayBackground(
 
         for ((index, anchor) in currentStep.withIndex()) {
             val key = currentKeys[index]
+            val holePaddingPx = with(density) { anchor.hint.properties.holePadding.toPx() }
+            val targetSize = Size(
+                width = anchor.size.width + holePaddingPx * 2,
+                height = anchor.size.height + holePaddingPx * 2,
+            )
+            val targetOffset = Offset(
+                x = anchor.offset.x - holePaddingPx,
+                y = anchor.offset.y - holePaddingPx,
+            )
+
             sizes.getOrPut(key) {
                 Animatable(
-                    initialValue = if (isInspectionMode) anchor.size.toSize() else Size.Zero,
+                    initialValue = if (isInspectionMode) targetSize else Size.Zero,
                     typeConverter = Size.VectorConverter,
                 )
             }
             offsets.getOrPut(key) {
                 Animatable(
-                    initialValue = if (isInspectionMode) anchor.offset else anchor.offset.copy(
-                        x = anchor.offset.x + anchor.size.width / 2,
-                        y = anchor.offset.y + anchor.size.height / 2,
+                    initialValue = if (isInspectionMode) targetOffset else targetOffset.copy(
+                        x = targetOffset.x + targetSize.width / 2,
+                        y = targetOffset.y + targetSize.height / 2,
                     ),
                     typeConverter = Offset.VectorConverter,
                 )
@@ -117,16 +127,26 @@ internal fun Modifier.overlayBackground(
             val sizeAnimatable = sizes[key] ?: continue
             val offsetAnimatable = offsets[key] ?: continue
 
+            val holePaddingPx = with(density) { anchor.hint.properties.holePadding.toPx() }
+            val targetSize = Size(
+                width = anchor.size.width + holePaddingPx * 2,
+                height = anchor.size.height + holePaddingPx * 2,
+            )
+            val targetOffset = Offset(
+                x = anchor.offset.x - holePaddingPx,
+                y = anchor.offset.y - holePaddingPx,
+            )
+
             launch {
                 sizeAnimatable.animateTo(
-                    targetValue = anchor.size.toSize(),
+                    targetValue = targetSize,
                     animationSpec = anchor.sizeAnimationSpec ?: anchorSizeAnimationSpec,
                 )
             }
 
             launch {
                 offsetAnimatable.animateTo(
-                    targetValue = anchor.offset,
+                    targetValue = targetOffset,
                     animationSpec = anchor.offsetAnimationSpec ?: anchorOffsetAnimationSpec,
                 )
             }

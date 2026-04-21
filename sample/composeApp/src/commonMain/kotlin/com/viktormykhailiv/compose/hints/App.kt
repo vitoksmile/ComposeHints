@@ -89,6 +89,7 @@ private fun AppInternal() {
             dismissOnBackPress = false,
             alignment = HintAlignment.EndTop,
             padding = 16.dp,
+            holePadding = 8.dp,
             offset = DpOffset(x = 0.dp, y = 8.dp),
         ),
     ) {
@@ -96,6 +97,7 @@ private fun AppInternal() {
             Text("Hint for TopAppBar")
             Text("* click outside to dismiss current hint")
             Text("* click/swipe back to dismiss is disabled")
+            Text("* holePadding = 8.dp (hole is bigger than the icon)")
 
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),

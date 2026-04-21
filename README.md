@@ -191,7 +191,8 @@ Each `Hint` can be configured with `HintProperties`:
 - `dismissOnBackPress`: whether the hint can be dismissed by pressing the back button.
 - `dismissOnClickOutside`: whether the hint can be dismissed by clicking outside its bounds.
 - `alignment`: where the hint should appear relative to the anchor (e.g., `Top`, `EndTop`, `Center`).
-- `padding`: the distance between the hint and its anchor.
+- `padding`: the distance (gap) between the hint content and its anchor.
+- `holePadding`: the padding around the anchor to expand the "hole" (the highlighted area) without affecting the UI layout.
 - `offset`: additional manual adjustment via `DpOffset`.
 
 ```kotlin
@@ -200,6 +201,7 @@ rememberHint(
         dismissOnBackPress = false,
         alignment = HintAlignment.EndTop,
         padding = 8.dp,
+        holePadding = 4.dp, // Highlight area is 4dp bigger than the button
         offset = DpOffset(x = 4.dp, y = 0.dp),
     ),
 ) {

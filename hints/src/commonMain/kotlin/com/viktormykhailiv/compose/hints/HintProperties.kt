@@ -96,7 +96,9 @@ enum class HintAlignment {
  * @property dismissOnClickOutside whether the hint can be dismissed by clicking outside the
  *   hint's bounds.
  * @property alignment the alignment of the hint relative to its anchor.
- * @property padding the padding between the hint and its anchor.
+ * @property padding the gap between the hint content and its anchor (or the hole).
+ * @property holePadding the padding to apply to the hole (the highlighted area) around the
+ *   anchor. This expands the cut-out area without affecting the actual UI layout.
  * @property offset additional offset to apply to the hint's position.
  */
 @Immutable
@@ -105,5 +107,6 @@ data class HintProperties(
     val dismissOnClickOutside: Boolean = true,
     val alignment: HintAlignment = HintAlignment.Bottom,
     val padding: Dp = 0.dp,
+    val holePadding: Dp = 0.dp,
     val offset: DpOffset = DpOffset.Zero,
 )
