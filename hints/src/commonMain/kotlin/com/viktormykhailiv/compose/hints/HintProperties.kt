@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import kotlin.time.Duration
 
 /**
  * Alignment of the hint relative to its anchor.
@@ -99,6 +100,9 @@ enum class HintAlignment {
  * @property padding the gap between the hint content and its anchor (or the hole).
  * @property holePadding the padding to apply to the hole (the highlighted area) around the
  *   anchor. This expands the cut-out area without affecting the actual UI layout.
+ * @property autoAdvanceDuration the duration after which the hint will automatically move to
+ *   the next step in the sequence (or dismiss if it's the last step). If null, the hint
+ *   will stay until manually dismissed.
  * @property offset additional offset to apply to the hint's position.
  */
 @Immutable
@@ -108,5 +112,6 @@ data class HintProperties(
     val alignment: HintAlignment = HintAlignment.Bottom,
     val padding: Dp = 0.dp,
     val holePadding: Dp = 0.dp,
+    val autoAdvanceDuration: Duration? = null,
     val offset: DpOffset = DpOffset.Zero,
 )

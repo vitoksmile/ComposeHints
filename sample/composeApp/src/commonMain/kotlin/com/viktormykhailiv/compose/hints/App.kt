@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.launch
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -90,6 +91,7 @@ private fun AppInternal() {
             alignment = HintAlignment.EndTop,
             padding = 16.dp,
             holePadding = 8.dp,
+            autoAdvanceDuration = 5.seconds,
             offset = DpOffset(x = 0.dp, y = 8.dp),
         ),
     ) {
@@ -98,6 +100,7 @@ private fun AppInternal() {
             Text("* click outside to dismiss current hint")
             Text("* click/swipe back to dismiss is disabled")
             Text("* holePadding = 8.dp (hole is bigger than the icon)")
+            Text("* auto-advances in 5 seconds")
 
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
@@ -358,7 +361,9 @@ private fun AppInternal() {
                     Row {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Button(
-                                modifier = Modifier.hintAnchor(topHintAnchor, CircleShape).padding(4.dp),
+                                modifier = Modifier
+                                    .hintAnchor(topHintAnchor, CircleShape)
+                                    .padding(4.dp),
                                 onClick = {
                                     coroutineScope.launch {
                                         hintController.show(topHintAnchor)
@@ -367,7 +372,9 @@ private fun AppInternal() {
                             ) { Text("Top") }
 
                             Button(
-                                modifier = Modifier.hintAnchor(bottomHintAnchor, CutCornerShape(8.dp)).padding(4.dp),
+                                modifier = Modifier
+                                    .hintAnchor(bottomHintAnchor, CutCornerShape(8.dp))
+                                    .padding(4.dp),
                                 onClick = {
                                     coroutineScope.launch {
                                         hintController.show(bottomHintAnchor)
@@ -378,7 +385,12 @@ private fun AppInternal() {
 
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Button(
-                                modifier = Modifier.hintAnchor(startHintAnchor, RoundedCornerShape(topStart = 16.dp)).padding(4.dp),
+                                modifier = Modifier
+                                    .hintAnchor(
+                                        startHintAnchor,
+                                        RoundedCornerShape(topStart = 16.dp)
+                                    )
+                                    .padding(4.dp),
                                 onClick = {
                                     coroutineScope.launch {
                                         hintController.show(startHintAnchor)
@@ -387,7 +399,12 @@ private fun AppInternal() {
                             ) { Text("Start") }
 
                             Button(
-                                modifier = Modifier.hintAnchor(endHintAnchor, RoundedCornerShape(bottomEnd = 16.dp)).padding(4.dp),
+                                modifier = Modifier
+                                    .hintAnchor(
+                                        endHintAnchor,
+                                        RoundedCornerShape(bottomEnd = 16.dp)
+                                    )
+                                    .padding(4.dp),
                                 onClick = {
                                     coroutineScope.launch {
                                         hintController.show(endHintAnchor)
@@ -398,7 +415,9 @@ private fun AppInternal() {
 
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Button(
-                                modifier = Modifier.hintAnchor(centerHintAnchor, CircleShape).padding(4.dp),
+                                modifier = Modifier
+                                    .hintAnchor(centerHintAnchor, CircleShape)
+                                    .padding(4.dp),
                                 onClick = {
                                     coroutineScope.launch {
                                         hintController.show(centerHintAnchor)
@@ -407,7 +426,9 @@ private fun AppInternal() {
                             ) { Text("Center") }
 
                             Button(
-                                modifier = Modifier.hintAnchor(overlapHintAnchor, RoundedCornerShape(0.dp)).padding(4.dp),
+                                modifier = Modifier
+                                    .hintAnchor(overlapHintAnchor, RoundedCornerShape(0.dp))
+                                    .padding(4.dp),
                                 onClick = {
                                     coroutineScope.launch {
                                         hintController.show(overlapHintAnchor)

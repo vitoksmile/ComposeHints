@@ -7,6 +7,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -18,6 +19,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import kotlinx.coroutines.delay
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.resume
@@ -242,6 +244,19 @@ private fun rememberHintController(
         LocalAnchorSizeAnimationSpec provides anchorSizeAnimationSpec,
         LocalAnchorOffsetAnimationSpec provides anchorOffsetAnimationSpec,
     ) {
+        LaunchedEffect(controller.activeStepIndex) {
+            val currentStep = controller.steps.getOrNull(controller.activeStepIndex)
+                ?: return@LaunchedEffect
+
+            // Find the first hint with an auto-advance duration in the current step
+            val autoAdvanceDuration = currentStep
+                .firstNotNullOfOrNull { it.hint.properties.autoAdvanceDuration }
+                ?: return@LaunchedEffect
+
+            delay(autoAdvanceDuration)
+            controller.next()
+        }
+
         HintOverlay(
             steps = controller.steps,
             activeStepIndex = controller.activeStepIndex,

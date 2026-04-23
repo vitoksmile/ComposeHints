@@ -193,6 +193,7 @@ Each `Hint` can be configured with `HintProperties`:
 - `alignment`: where the hint should appear relative to the anchor (e.g., `Top`, `EndTop`, `Center`).
 - `padding`: the distance (gap) between the hint content and its anchor.
 - `holePadding`: the padding around the anchor to expand the "hole" (the highlighted area) without affecting the UI layout.
+- `autoAdvanceDuration`: the duration after which the hint will automatically move to the next step.
 - `offset`: additional manual adjustment via `DpOffset`.
 
 ```kotlin
@@ -202,6 +203,7 @@ rememberHint(
         alignment = HintAlignment.EndTop,
         padding = 8.dp,
         holePadding = 4.dp, // Highlight area is 4dp bigger than the button
+        autoAdvanceDuration = 5.seconds, // Automatically moves to next after 5s
         offset = DpOffset(x = 4.dp, y = 0.dp),
     ),
 ) {

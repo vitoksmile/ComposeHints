@@ -99,18 +99,20 @@ public final class com/viktormykhailiv/compose/hints/HintOverlayBackgroundKt {
 
 public final class com/viktormykhailiv/compose/hints/HintProperties {
 	public static final field $stable I
-	public synthetic fun <init> (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FFJILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FFJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FFLkotlin/time/Duration;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FFLkotlin/time/Duration;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Z
 	public final fun component2 ()Z
 	public final fun component3 ()Lcom/viktormykhailiv/compose/hints/HintAlignment;
 	public final fun component4-D9Ej5fM ()F
 	public final fun component5-D9Ej5fM ()F
-	public final fun component6-RKDOV3M ()J
-	public final fun copy-Ph6Ghqw (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FFJ)Lcom/viktormykhailiv/compose/hints/HintProperties;
-	public static synthetic fun copy-Ph6Ghqw$default (Lcom/viktormykhailiv/compose/hints/HintProperties;ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FFJILjava/lang/Object;)Lcom/viktormykhailiv/compose/hints/HintProperties;
+	public final fun component6-FghU774 ()Lkotlin/time/Duration;
+	public final fun component7-RKDOV3M ()J
+	public final fun copy-OlxD8vE (ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FFLkotlin/time/Duration;J)Lcom/viktormykhailiv/compose/hints/HintProperties;
+	public static synthetic fun copy-OlxD8vE$default (Lcom/viktormykhailiv/compose/hints/HintProperties;ZZLcom/viktormykhailiv/compose/hints/HintAlignment;FFLkotlin/time/Duration;JILjava/lang/Object;)Lcom/viktormykhailiv/compose/hints/HintProperties;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAlignment ()Lcom/viktormykhailiv/compose/hints/HintAlignment;
+	public final fun getAutoAdvanceDuration-FghU774 ()Lkotlin/time/Duration;
 	public final fun getDismissOnBackPress ()Z
 	public final fun getDismissOnClickOutside ()Z
 	public final fun getHolePadding-D9Ej5fM ()F
