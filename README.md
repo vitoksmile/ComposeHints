@@ -24,7 +24,7 @@ First add the dependency to your project:
 
 ```toml
 [versions]
-hints = "2.2.1"
+hints = "3.0.0"
 
 [libraries]
 compose-hints = { module = "com.viktormykhailiv:compose-hints", version.ref = "hints" }
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.viktormykhailiv:compose-hints:2.2.1")
+    implementation("com.viktormykhailiv:compose-hints:3.0.0")
 }
 ```
 

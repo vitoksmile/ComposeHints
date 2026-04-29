@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.0](https://github.com/vitoksmile/ComposeHints/releases/tag/3.0.0)
+
+*   **Advanced Positioning**: Added `HintAlignment` (Top, Bottom, Start, End, Center, Overlap) and `contentOffset` for precise control.
+*   **Smart Positioning**: Hints now automatically adjust to stay within screen bounds, with built-in RTL awareness.
+*   **Multiple Anchors**: Support for linking a single hint to multiple anchors.
+*   **Enhanced Sequence Control**: Added `next()` and `previous()` methods to `HintController`, along with `currentStepIndex`, `totalStepsCount`, `hasNext`, and `hasPrevious` properties.
+*   **Auto-Advance**: Support for automatic progression to the next hint via configurable timers.
+*   **Hole Padding**: Added support for padding around the highlighted anchor "hole".
+
 ## [2.2.1](https://github.com/vitoksmile/ComposeHints/releases/tag/2.2.1)
 
 *  Fixed missing anchor highlight (regression in 2.2.0)
