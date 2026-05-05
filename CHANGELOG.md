@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.1](https://github.com/vitoksmile/ComposeHints/releases/tag/3.0.1)
+
+*   Fixed mask misalignment and "stuck" overlay state when scrolling or right after initial layout ([#6](https://github.com/vitoksmile/ComposeHints/issues/6)).
+*   Ensured mask holes persist during the overlay exit animation for a smoother visual transition.
+
 ## [3.0.0](https://github.com/vitoksmile/ComposeHints/releases/tag/3.0.0)
 
 *   **Advanced Positioning**: Added `HintAlignment` (Top, Bottom, Start, End, Center, Overlap) and `contentOffset` for precise control.

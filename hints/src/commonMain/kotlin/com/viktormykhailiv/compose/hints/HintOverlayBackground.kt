@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.unit.toSize
 import kotlinx.coroutines.launch
 
 internal val HintOverlayColorDefault: Color = Color(0x44000000)
@@ -63,6 +62,8 @@ internal fun Modifier.overlayBackground(
 
     // Sync maps and initialize animatables in composition to avoid one-frame glitches
     if (activeStepIndex != -1) {
+        lastActiveStepIndex = activeStepIndex
+
         val currentKeys = currentStep.indices.map { index ->
             if (anchorAnimationMode == HintAnchorAnimationMode.Follow) {
                 index
@@ -108,25 +109,18 @@ internal fun Modifier.overlayBackground(
         }
     }
 
-    LaunchedEffect(activeStepIndex, steps, anchorAnimationMode) {
-        if (activeStepIndex == -1) {
-            lastActiveStepIndex = -1
-            sizes.clear()
-            offsets.clear()
-            return@LaunchedEffect
+    // React to anchor changes and trigger animations
+    for ((index, anchor) in currentStep.withIndex()) {
+        val key = if (anchorAnimationMode == HintAnchorAnimationMode.Follow) {
+            index
+        } else {
+            activeStepIndex to index
         }
-        val currentStep = steps.getOrNull(activeStepIndex) ?: return@LaunchedEffect
-        lastActiveStepIndex = activeStepIndex
 
-        for ((index, anchor) in currentStep.withIndex()) {
-            val key = if (anchorAnimationMode == HintAnchorAnimationMode.Follow) {
-                index
-            } else {
-                activeStepIndex to index
-            }
-            val sizeAnimatable = sizes[key] ?: continue
-            val offsetAnimatable = offsets[key] ?: continue
+        val sizeAnimatable = sizes[key] ?: continue
+        val offsetAnimatable = offsets[key] ?: continue
 
+        LaunchedEffect(anchor.size, anchor.offset) {
             val holePaddingPx = with(density) { anchor.hint.properties.holePadding.toPx() }
             val targetSize = Size(
                 width = anchor.size.width + holePaddingPx * 2,
@@ -164,13 +158,15 @@ internal fun Modifier.overlayBackground(
             close()
         }
 
-        val activeStep = steps.getOrNull(activeStepIndex) ?: emptyList()
+        // Draw holes for the current active step or the last active step during exit animation
+        val stepIndex = if (activeStepIndex != -1) activeStepIndex else lastActiveStepIndex
+        val activeStep = steps.getOrNull(stepIndex) ?: emptyList()
 
         for ((index, anchor) in activeStep.withIndex()) {
             val key = if (anchorAnimationMode == HintAnchorAnimationMode.Follow) {
                 index
             } else {
-                activeStepIndex to index
+                stepIndex to index
             }
             val sizeAnim = sizes[key]
             val offsetAnim = offsets[key]
