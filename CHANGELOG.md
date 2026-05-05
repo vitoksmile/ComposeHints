@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.2.2](https://github.com/vitoksmile/ComposeHints/releases/tag/2.2.2)
+
+*   Fixed mask misalignment and "stuck" overlay state when scrolling or right after initial layout ([#6](https://github.com/vitoksmile/ComposeHints/issues/6)).
+*   Ensured mask holes persist during the overlay exit animation for a smoother visual transition.
+
 ## [2.2.1](https://github.com/vitoksmile/ComposeHints/releases/tag/2.2.1)
 
 *  Fixed missing anchor highlight (regression in 2.2.0)

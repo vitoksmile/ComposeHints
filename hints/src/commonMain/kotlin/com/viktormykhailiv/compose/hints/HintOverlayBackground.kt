@@ -6,8 +6,11 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -52,8 +55,11 @@ internal fun Modifier.overlayBackground(
     val sizes = remember { mutableStateMapOf<Hint, Animatable<Size, AnimationVector2D>>() }
     val offsets = remember { mutableStateMapOf<Hint, Animatable<Offset, AnimationVector2D>>() }
 
+    var lastActiveAnchorIndex by remember { mutableStateOf<Int>(-1) }
     val currentAnchor = anchors.getOrNull(activeAnchorIndex)
+
     if (currentAnchor != null) {
+        lastActiveAnchorIndex = activeAnchorIndex
         sizes.getOrPut(currentAnchor.hint) {
             Animatable(
                 initialValue = if (isInspectionMode) currentAnchor.size.toSize() else Size.Zero,
@@ -68,57 +74,27 @@ internal fun Modifier.overlayBackground(
         }
     }
 
-    LaunchedEffect(activeAnchorIndex, anchors) {
-        val anchor = anchors.getOrNull(activeAnchorIndex) ?: return@LaunchedEffect
-        val sizeAnimatable = sizes[anchor.hint] ?: return@LaunchedEffect
-        val offsetAnimatable = offsets[anchor.hint] ?: return@LaunchedEffect
+    // React to anchor changes and trigger animations
+    if (currentAnchor != null) {
+        val sizeAnimatable = sizes[currentAnchor.hint]
+        val offsetAnimatable = offsets[currentAnchor.hint]
 
-        launch {
-            if (anchorAnimationMode == HintAnchorAnimationMode.Follow && activeAnchorIndex != 0) {
-                val previousAnchor = anchors.getOrNull(activeAnchorIndex - 1)
-                if (previousAnchor != null) {
-                    sizeAnimatable.snapTo(previousAnchor.size.toSize())
-                }
-            }
-
-            sizeAnimatable.animateTo(
-                targetValue = anchor.size.toSize(),
-                animationSpec = anchor.sizeAnimationSpec ?: anchorSizeAnimationSpec,
-            )
-        }
-
-        launch {
-            when {
-                anchorAnimationMode == HintAnchorAnimationMode.Scale -> {
-                    offsetAnimatable.snapTo(
-                        anchor.offset.copy(
-                            x = anchor.offset.x + anchor.size.width / 2,
-                            y = anchor.offset.y + anchor.size.height / 2,
-                        )
+        if (sizeAnimatable != null && offsetAnimatable != null) {
+            LaunchedEffect(currentAnchor.size, currentAnchor.offset) {
+                launch {
+                    sizeAnimatable.animateTo(
+                        targetValue = currentAnchor.size.toSize(),
+                        animationSpec = currentAnchor.sizeAnimationSpec ?: anchorSizeAnimationSpec,
                     )
                 }
 
-                activeAnchorIndex == 0 -> {
-                    offsetAnimatable.snapTo(
-                        anchor.offset.copy(
-                            x = anchor.offset.x + anchor.size.width / 2,
-                            y = anchor.offset.y + anchor.size.height / 2,
-                        )
+                launch {
+                    offsetAnimatable.animateTo(
+                        targetValue = currentAnchor.offset,
+                        animationSpec = currentAnchor.offsetAnimationSpec ?: anchorOffsetAnimationSpec,
                     )
                 }
-
-                else -> {
-                    val previousAnchor = anchors.getOrNull(activeAnchorIndex - 1)
-                    if (previousAnchor != null) {
-                        offsetAnimatable.snapTo(previousAnchor.offset)
-                    }
-                }
             }
-
-            offsetAnimatable.animateTo(
-                targetValue = anchor.offset,
-                animationSpec = anchor.offsetAnimationSpec ?: anchorOffsetAnimationSpec,
-            )
         }
     }
     // endregion
@@ -133,7 +109,8 @@ internal fun Modifier.overlayBackground(
             close()
         }
 
-        val anchor = anchors.getOrNull(activeAnchorIndex)
+        val anchorIndex = if (activeAnchorIndex != -1) activeAnchorIndex else lastActiveAnchorIndex
+        val anchor = anchors.getOrNull(anchorIndex)
         val sizeAnim = anchor?.let { sizes[it.hint] }
         val offsetAnim = anchor?.let { offsets[it.hint] }
 
