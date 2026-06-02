@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
@@ -31,7 +30,6 @@ internal fun HintsContainer(
     activeStepIndex: Int,
     dismissCurrentHintOnClickOutside: () -> Unit,
 ) {
-    val isInspectionMode = LocalInspectionMode.current
     val layoutDirection = LocalLayoutDirection.current
     val visibleStates = remember {
         mutableStateMapOf<Hint, MutableTransitionState<Boolean>>()
@@ -44,7 +42,7 @@ internal fun HintsContainer(
     allHints.forEach { hint ->
         val isActive = steps.getOrNull(activeStepIndex)?.any { it.hint === hint } ?: false
         visibleStates.getOrPut(hint) {
-            MutableTransitionState(initialState = isInspectionMode && isActive)
+            MutableTransitionState(initialState = isActive)
         }
     }
 
@@ -52,7 +50,7 @@ internal fun HintsContainer(
         allHints.forEach { hint ->
             val isActive = steps.getOrNull(activeStepIndex)?.any { it.hint === hint } ?: false
             val state = visibleStates.getOrPut(hint) {
-                MutableTransitionState(initialState = isInspectionMode && isActive)
+                MutableTransitionState(initialState = isActive)
             }
             state.targetState = isActive
         }

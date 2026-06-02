@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.2](https://github.com/vitoksmile/ComposeHints/releases/tag/3.0.2)
+
+*   **Hint Queueing**: Multiple requests to show hints are now correctly queued and shown one-by-one, preventing overlapping or missing hints.
+*   **Improved Cancellation**: Improved how hints handle being cancelled or dismissed.
+
 ## [3.0.1](https://github.com/vitoksmile/ComposeHints/releases/tag/3.0.1)
 
 *   Fixed mask misalignment and "stuck" overlay state when scrolling or right after initial layout ([#6](https://github.com/vitoksmile/ComposeHints/issues/6)).

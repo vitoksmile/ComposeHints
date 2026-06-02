@@ -45,6 +45,13 @@ You are an expert developer working on **ComposeHints**, a Compose Multiplatform
 - Maintain binary compatibility. Use the `binary-compatibility-validator` plugin.
 - Public APIs should be documented with KDoc.
 
+## Release Process
+
+### 1. Version Updates
+- Update `VERSION_NAME` in `gradle.properties`.
+- Add release notes to `CHANGELOG.md`.
+- Update the version number in `README.md` installation instructions.
+
 ## Development Workflow
 
 ### 1. Testing

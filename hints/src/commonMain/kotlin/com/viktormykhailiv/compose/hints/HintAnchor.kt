@@ -2,6 +2,7 @@ package com.viktormykhailiv.compose.hints
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -23,6 +24,11 @@ import androidx.compose.ui.unit.IntSize
 class HintAnchorState internal constructor(
     internal val hint: Hint,
 ) {
+
+    /**
+     * Returns false if the corresponding layout was detached from the hierarchy.
+     */
+    internal var isAttached: Boolean by mutableStateOf(false)
 
     internal var size: IntSize by mutableStateOf(IntSize.Zero)
     internal var offset: Offset by mutableStateOf(Offset.Zero)
@@ -75,6 +81,10 @@ fun Modifier.hintAnchor(
         if (self.isAttached) {
             updateOffset(self)
         }
+        state.isAttached = self.isAttached
+    }
+    DisposableEffect(Unit) {
+        onDispose { state.isAttached = false }
     }
 
     state.shape = shape

@@ -7,6 +7,7 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
-import androidx.compose.ui.platform.LocalInspectionMode
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -25,25 +25,29 @@ internal fun HintOverlay(
     dismissCurrentHintOnClickOutside: () -> Unit,
     onBackClicked: () -> Unit,
 ) {
-    val isInspectionMode = LocalInspectionMode.current
     val visibleState = remember {
-        MutableTransitionState<Boolean>(isInspectionMode && activeStepIndex >= 0)
+        MutableTransitionState<Boolean>(activeStepIndex >= 0)
     }
     LaunchedEffect(activeStepIndex) {
         visibleState.targetState = activeStepIndex >= 0
     }
 
     var showPopup by remember {
-        mutableStateOf(isInspectionMode && activeStepIndex >= 0)
+        mutableStateOf(activeStepIndex >= 0)
     }
     LaunchedEffect(visibleState.currentState, visibleState.targetState, visibleState.isIdle) {
         showPopup = visibleState.currentState || visibleState.targetState ||
                 // Still show popup if exit animation is running
                 !visibleState.targetState && !visibleState.isIdle
     }
+
+    val hostController = LocalHintHostController.current
     if (!showPopup) {
-        LocalHintHostController.current.disposeContent()
+        hostController.disposeContent()
         return
+    }
+    DisposableEffect(Unit) {
+        onDispose { hostController.disposeContent() }
     }
 
     val hintOverlayColor = LocalHintOverlayColor.current
@@ -54,7 +58,7 @@ internal fun HintOverlay(
     val anchorSizeAnimationSpec = LocalAnchorSizeAnimationSpec.current
     val anchorOffsetAnimationSpec = LocalAnchorOffsetAnimationSpec.current
 
-    LocalHintHostController.current.Content {
+    hostController.Content {
         BackHandler { onBackClicked() }
 
         CompositionLocalProvider(

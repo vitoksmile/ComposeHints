@@ -24,7 +24,7 @@ First add the dependency to your project:
 
 ```toml
 [versions]
-hints = "3.0.0"
+hints = "3.1.0"
 
 [libraries]
 compose-hints = { module = "com.viktormykhailiv:compose-hints", version.ref = "hints" }
@@ -42,8 +42,9 @@ repositories {
 }
 
 dependencies {
-    implementation("com.viktormykhailiv:compose-hints:3.0.0")
-}
+    implementation("com.viktormykhailiv:compose-hints:3.0.2")
+    ```
+
 ```
 
 To show a hint we need wrap root Composable with `HintHost`, configure `HintController`, 

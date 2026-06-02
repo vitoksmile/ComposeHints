@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalLayoutDirection
 import kotlinx.coroutines.launch
 
@@ -44,7 +43,6 @@ internal fun Modifier.overlayBackground(
     val backgroundColor = LocalHintOverlayColor.current
     val layoutDirection = LocalLayoutDirection.current
     val density = LocalDensity.current
-    val isInspectionMode = LocalInspectionMode.current
 
     // region Animations
     val anchorAnimationMode = LocalAnchorAnimationMode.current
@@ -93,13 +91,13 @@ internal fun Modifier.overlayBackground(
 
             sizes.getOrPut(key) {
                 Animatable(
-                    initialValue = if (isInspectionMode) targetSize else Size.Zero,
+                    initialValue = Size.Zero,
                     typeConverter = Size.VectorConverter,
                 )
             }
             offsets.getOrPut(key) {
                 Animatable(
-                    initialValue = if (isInspectionMode) targetOffset else targetOffset.copy(
+                    initialValue = targetOffset.copy(
                         x = targetOffset.x + targetSize.width / 2,
                         y = targetOffset.y + targetSize.height / 2,
                     ),

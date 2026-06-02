@@ -7,6 +7,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.Stable
@@ -19,12 +20,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 @Stable
 class HintController internal constructor() {
@@ -55,7 +58,9 @@ class HintController internal constructor() {
      */
     val hasPrevious: Boolean get() = activeStepIndex > 0
 
-    private val pendingRequests = mutableMapOf<List<HintAnchorState>, Continuation<Unit>>()
+    private var currentRequest: CancellableContinuation<Unit>? = null
+
+    private val mutex = Mutex()
 
     /**
      * Show a single hint with one anchor.
@@ -83,14 +88,36 @@ class HintController internal constructor() {
     /**
      * Show a sequence of steps, where each step can have multiple anchors.
      */
-    suspend fun show(steps: List<List<HintAnchorState>>) {
+    suspend fun show(steps: List<List<HintAnchorState>>) = mutex.withLock {
         if (steps.isEmpty()) throw IllegalArgumentException("Nothing to show")
 
-        suspendCoroutine { continuation ->
-            pendingRequests[steps.last()] = continuation
+        val availableSteps = steps.asSequence()
+            .map { s -> s.filter { it.isAttached } }
+            .filter { it.isNotEmpty() }
+            .toList()
+
+        if (availableSteps.isEmpty()) {
+            return@withLock
+        }
+
+        try {
+            suspendCancellableCoroutine { continuation ->
+                currentRequest = continuation
+                queue.addAll(availableSteps)
+                activeStepIndex = 0
+
+                continuation.invokeOnCancellation {
+                    if (currentRequest === continuation) {
+                        currentRequest = null
+                        queue.clear()
+                        activeStepIndex = -1
+                    }
+                }
+            }
+        } finally {
+            currentRequest = null
             queue.clear()
-            queue.addAll(steps)
-            activeStepIndex = 0
+            activeStepIndex = -1
         }
     }
 
@@ -99,13 +126,12 @@ class HintController internal constructor() {
      * If this is the last hint, the sequence will be finished and dismissed.
      */
     fun next() {
-        val step = findCurrentStep() ?: return
+        findCurrentStep() ?: return
 
         activeStepIndex++
         if (activeStepIndex >= queue.size) {
-            activeStepIndex = -1
+            completeSequence()
         }
-        dismissCurrentStep(step)
     }
 
     /**
@@ -119,13 +145,7 @@ class HintController internal constructor() {
     }
 
     fun dismiss() {
-        pendingRequests.values
-            .forEach { continuation ->
-                continuation.resumeWithException(CancellationException("Hint was dismissed"))
-            }
-        pendingRequests.clear()
-        queue.clear()
-        activeStepIndex = -1
+        currentRequest?.cancel(CancellationException("Hint was dismissed"))
     }
 
     internal fun dismissCurrentHintOnClickOutside() {
@@ -141,19 +161,12 @@ class HintController internal constructor() {
 
         activeStepIndex++
         if (activeStepIndex >= queue.size) {
-            activeStepIndex = -1
+            completeSequence()
         }
-        dismissCurrentStep(step)
     }
 
-    private fun dismissCurrentStep(step: List<HintAnchorState>) {
-        pendingRequests[step]?.let { continuation ->
-            continuation.resume(Unit)
-            pendingRequests.remove(step)
-        }
-        if (pendingRequests.isEmpty()) {
-            queue.clear()
-        }
+    private fun completeSequence() {
+        currentRequest?.resume(Unit)
     }
 
     internal fun dismissAllHintsOnBackClicked() {
@@ -235,6 +248,10 @@ private fun rememberHintController(
     requireNotNull(LocalHintHostController.current)
 
     val controller = remember { HintController() }
+
+    DisposableEffect(controller) {
+        onDispose { controller.dismiss() }
+    }
 
     CompositionLocalProvider(
         overlay,
