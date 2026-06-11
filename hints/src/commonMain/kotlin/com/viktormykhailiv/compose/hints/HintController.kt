@@ -27,7 +27,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
+import kotlin.time.Duration.Companion.milliseconds
 
 @Stable
 class HintController internal constructor() {
@@ -90,6 +90,13 @@ class HintController internal constructor() {
      */
     suspend fun show(steps: List<List<HintAnchorState>>) = mutex.withLock {
         if (steps.isEmpty()) throw IllegalArgumentException("Nothing to show")
+
+        // Wait phase: max 5 attempts (100ms total) if any anchor is currently being attached.
+        var attempts = 0
+        while (attempts <= 5 && steps.any { step -> step.any { it.isAttaching } }) {
+            delay(20.milliseconds)
+            attempts++
+        }
 
         val availableSteps = steps.asSequence()
             .map { s -> s.filter { it.isAttached } }
@@ -219,7 +226,7 @@ fun rememberHintController(
 
 @Composable
 fun rememberHintController(
-    overlay: Color = HintOverlayColorDefault,
+    overlay: Color = LocalHintOverlayColor.current,
     overlayEnterTransition: EnterTransition = HintAnimationDefaults.enterTransition(),
     overlayExitTransition: ExitTransition = HintAnimationDefaults.exitTransition(),
     anchorAnimationMode: HintAnchorAnimationMode = HintAnimationDefaults.anchorAnimationMode(),

@@ -42,9 +42,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.viktormykhailiv:compose-hints:3.0.2")
-    ```
-
+    implementation("com.viktormykhailiv:compose-hints:3.1.0")
+}
 ```
 
 To show a hint we need wrap root Composable with `HintHost`, configure `HintController`, 
@@ -83,6 +82,20 @@ Button(
 > button's size).
 
 ## Customizations
+
+### Full-screen Hints
+
+Sometimes you want to show a general introductory or welcome hint that doesn't point to a 
+specific UI element. You can achieve this by setting `fullScreen = true` in the `hintAnchor` modifier.
+
+```kotlin
+Modifier.hintAnchor(welcomeHintAnchor, fullScreen = true)
+```
+
+In this mode:
+- The specific UI element's position and size are ignored.
+- No highlighted "hole" is drawn in the background.
+- The hint is positioned relative to the top-left of the `HintHost`.
 
 ### Show many hints (Sequences)
 
@@ -230,10 +243,26 @@ alignments as well (e.g., `EndTop` will flip to `StartTop` if it hits the screen
 Alignments like `Start` and `End` are automatically mirrored in Right-to-Left (RTL) layouts, so 
 your onboarding flows will look correct for all users without any extra code.
 
-### Overlay color
+### Overlay customization
 
-Be default the background overlay has scrimColor as `Color(0x44000000)`. There is an option to
-provide either a `Color` or `Brush`:
+By default the background overlay has scrimColor as `Color(0x44000000)`. You can customize it 
+globally for all hints in a `HintHost`, or specifically for a `HintController`.
+
+#### Global Customization (via HintHost)
+Setting the overlay at the `HintHost` level ensures all hints in your app (or that specific screen) 
+share the same background style.
+
+```kotlin
+HintHost(
+    overlay = Color.Red.copy(alpha = 0.4f)
+) {
+    // All hints shown here will have a red overlay by default
+}
+```
+
+#### Local Customization (via HintController)
+There is also an option to provide either a `Color` or `Brush` directly to `rememberHintController`. 
+This will override the global default from `HintHost`.
 
 ```kotlin
 val hintController = rememberHintController(overlay = Color.Red)

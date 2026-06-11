@@ -26,6 +26,11 @@ class HintAnchorState internal constructor(
 ) {
 
     /**
+     * Returns true if the corresponding layout is being attached to the hierarchy.
+     */
+    internal var isAttaching: Boolean by mutableStateOf(false)
+
+    /**
      * Returns false if the corresponding layout was detached from the hierarchy.
      */
     internal var isAttached: Boolean by mutableStateOf(false)
@@ -55,17 +60,25 @@ fun rememberHintAnchorState(hint: Hint): HintAnchorState {
  * If null, animation from [rememberHintController] will be used.
  * @param offsetAnimationSpec to animate the offset of the anchor.
  * If null, animation from [rememberHintController] will be used.
+ * @param fullScreen if true, the hint will be treated as a full-screen overlay.
+ * The specific UI element's position and size will be ignored, and no highlighted
+ * hole will be drawn in the background. Useful for introductory or welcome hints.
  */
 fun Modifier.hintAnchor(
     state: HintAnchorState,
     shape: Shape = RectangleShape,
     sizeAnimationSpec: AnimationSpec<Size>? = HintAnimationDefaults.anchorSizeAnimationSpec(),
     offsetAnimationSpec: AnimationSpec<Offset>? = HintAnimationDefaults.anchorOffsetAnimationSpec(),
+    fullScreen: Boolean = false,
 ): Modifier = composed {
+    state.isAttaching = !state.isAttached
+
     val hostController = LocalHintHostController.current
     var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
     fun updateOffset(self: LayoutCoordinates) {
+        if (fullScreen) return
+
         state.size = self.size
 
         val hostCoordinates = hostController.hostCoordinates
@@ -81,10 +94,14 @@ fun Modifier.hintAnchor(
         if (self.isAttached) {
             updateOffset(self)
         }
+        state.isAttaching = false
         state.isAttached = self.isAttached
     }
     DisposableEffect(Unit) {
-        onDispose { state.isAttached = false }
+        onDispose {
+            state.isAttaching = false
+            state.isAttached = false
+        }
     }
 
     state.shape = shape

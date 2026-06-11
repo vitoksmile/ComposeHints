@@ -37,8 +37,8 @@ public final class com/viktormykhailiv/compose/hints/HintAnchorAnimationMode : j
 }
 
 public final class com/viktormykhailiv/compose/hints/HintAnchorKt {
-	public static final fun hintAnchor (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;)Landroidx/compose/ui/Modifier;
-	public static synthetic fun hintAnchor$default (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun hintAnchor (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;Z)Landroidx/compose/ui/Modifier;
+	public static synthetic fun hintAnchor$default (Landroidx/compose/ui/Modifier;Lcom/viktormykhailiv/compose/hints/HintAnchorState;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/animation/core/AnimationSpec;Landroidx/compose/animation/core/AnimationSpec;ZILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 	public static final fun rememberHintAnchorState (Lcom/viktormykhailiv/compose/hints/Hint;Landroidx/compose/runtime/Composer;I)Lcom/viktormykhailiv/compose/hints/HintAnchorState;
 }
 
@@ -85,7 +85,8 @@ public final class com/viktormykhailiv/compose/hints/HintControllerKt {
 }
 
 public final class com/viktormykhailiv/compose/hints/HintHostKt {
-	public static final fun HintHost (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public static final fun HintHost (Landroidx/compose/ui/graphics/Brush;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public static final fun HintHost-3J-VO9M (JLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/viktormykhailiv/compose/hints/HintKt {

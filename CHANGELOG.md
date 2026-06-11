@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.0](https://github.com/vitoksmile/ComposeHints/releases/tag/3.1.0)
+
+*   **Full-screen Hints**: Added `fullScreen` parameter to `Modifier.hintAnchor`. When enabled, the hint is treated as a global overlay without highlighting a specific UI element. Useful for introductory or welcome screens.
+*   **Overlay Customization**: `HintHost` now supports an `overlay` parameter (Color or Brush) to define a default background for all hints in its hierarchy. `HintController` automatically inherits this default.
+*   **Robust Anchor Attachment**: Improved `HintController.show` to wait for anchors to be fully attached and measured, preventing race conditions where hints might be skipped or misaligned.
+
 ## [3.0.2](https://github.com/vitoksmile/ComposeHints/releases/tag/3.0.2)
 
 *   **Hint Queueing**: Multiple requests to show hints are now correctly queued and shown one-by-one, preventing overlapping or missing hints.

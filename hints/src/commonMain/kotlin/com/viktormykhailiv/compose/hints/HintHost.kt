@@ -4,29 +4,87 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 
 /**
- * Wrap root Composable with `HintHost` to define a space where Hints will be shown.
+ * Wrap the root Composable of your UI with [HintHost] to define the coordinate space
+ * where hints and tooltips will be displayed.
+ *
+ * It serves as the top-level container that manages the hint overlay layer and
+ * provides the default [overlay] color to all [HintController]s within its hierarchy.
+ *
+ * @param overlay default background color for the hint overlays.
+ * Defaults to a semi-transparent black.
+ * @param content the UI content that will be wrapped by the hint host.
  *
  * Example:
  * ```
- * HintHost {
+ * HintHost(
+ *     overlay = Color.Black.copy(alpha = 0.6f),
+ * ) {
  *      MaterialTheme {
- *          Scaffold()
+ *          Scaffold(...) { ... }
  *      }
  * }
  * ```
  */
 @Composable
 fun HintHost(
+    overlay: Color = HintOverlayColorDefault,
+    content: @Composable () -> Unit,
+) {
+    HintHost(
+        overlay = LocalHintOverlayColor provides overlay,
+        content = content,
+    )
+}
+
+/**
+ * Wrap the root Composable of your UI with [HintHost] to define the coordinate space
+ * where hints and tooltips will be displayed.
+ *
+ * This overload allows using a [Brush] (e.g., a gradient) for the background overlay.
+ *
+ * @param overlay default background brush for the hint overlays.
+ * @param content the UI content that will be wrapped by the hint host.
+ *
+ * Example:
+ * ```
+ * HintHost(
+ *     overlay = Brush.verticalGradient(
+ *         colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.5f))
+ *     ),
+ * ) {
+ *      MaterialTheme {
+ *          AppContent()
+ *      }
+ * }
+ * ```
+ */
+@Composable
+fun HintHost(
+    overlay: Brush,
+    content: @Composable () -> Unit,
+) {
+    HintHost(
+        overlay = LocalHintOverlayBrush provides overlay,
+        content = content,
+    )
+}
+
+@Composable
+private fun HintHost(
+    overlay: ProvidedValue<*>,
     content: @Composable () -> Unit,
 ) {
     val hostController = rememberHintHostControllerOwner()
@@ -37,6 +95,7 @@ fun HintHost(
             .onGloballyPositioned { hostController.hostCoordinates = it },
     ) {
         CompositionLocalProvider(
+            overlay,
             LocalHintHostController provides hostController,
         ) {
             content()
