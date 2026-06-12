@@ -13,8 +13,12 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.isActive
 
 /**
  * Wrap the root Composable of your UI with [HintHost] to define the coordinate space
@@ -88,6 +92,7 @@ private fun HintHost(
     content: @Composable () -> Unit,
 ) {
     val hostController = rememberHintHostControllerOwner()
+    val touchInterceptor = rememberHintTouchInterceptor()
 
     Box(
         modifier = Modifier
@@ -97,8 +102,30 @@ private fun HintHost(
         CompositionLocalProvider(
             overlay,
             LocalHintHostController provides hostController,
+            LocalHintTouchInterceptor provides touchInterceptor,
         ) {
-            content()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        coroutineScope {
+                            awaitPointerEventScope {
+                                while (isActive) {
+                                    awaitPointerEvent(PointerEventPass.Initial)
+                                        .changes
+                                        .forEach { change ->
+                                            if (change.pressed && touchInterceptor.interceptTouchEvents) {
+                                                change.consume()
+                                                touchInterceptor.interceptTouchEvents = false
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                    }
+            ) {
+                content()
+            }
 
             hostController.ObserveContent()
         }
@@ -145,5 +172,30 @@ private fun rememberHintHostControllerOwner(): HintHostControllerOwner = remembe
         override fun disposeContent() {
             content.value = null
         }
+    }
+}
+
+/**
+ * CompositionLocal to access the [HintTouchInterceptor] from within descendants of [HintHost].
+ */
+internal val LocalHintTouchInterceptor = staticCompositionLocalOf<HintTouchInterceptor> {
+    error("HintHost was not set as root Composable")
+}
+
+/**
+ * Interface to control whether pointer events should be intercepted and consumed by the [HintHost].
+ */
+internal interface HintTouchInterceptor {
+    /**
+     * When set to true, the next pointer press event at the root level is intercepted and consumed,
+     * preventing it from propagating to underlying composables.
+     */
+    var interceptTouchEvents: Boolean
+}
+
+@Composable
+private fun rememberHintTouchInterceptor(): HintTouchInterceptor = remember {
+    object : HintTouchInterceptor {
+        override var interceptTouchEvents: Boolean by mutableStateOf(false)
     }
 }

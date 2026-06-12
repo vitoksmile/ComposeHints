@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.1](https://github.com/vitoksmile/ComposeHints/releases/tag/3.1.1)
+
+*   **Intercept Parent Touch Events**: Implemented touch interception at the root level of `HintHost` to consume pointer events when hints are active.
+
 ## [3.1.0](https://github.com/vitoksmile/ComposeHints/releases/tag/3.1.0)
 
 *   **Full-screen Hints**: Added `fullScreen` parameter to `Modifier.hintAnchor`. When enabled, the hint is treated as a global overlay without highlighting a specific UI element. Useful for introductory or welcome screens.

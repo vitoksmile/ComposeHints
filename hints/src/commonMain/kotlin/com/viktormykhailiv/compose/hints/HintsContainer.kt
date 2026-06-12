@@ -46,13 +46,20 @@ internal fun HintsContainer(
         }
     }
 
+    val touchInterceptor = LocalHintTouchInterceptor.current
     LaunchedEffect(steps, activeStepIndex) {
+        touchInterceptor.interceptTouchEvents = false
+
         allHints.forEach { hint ->
             val isActive = steps.getOrNull(activeStepIndex)?.any { it.hint === hint } ?: false
             val state = visibleStates.getOrPut(hint) {
                 MutableTransitionState(initialState = isActive)
             }
             state.targetState = isActive
+
+            if (isActive) {
+                touchInterceptor.interceptTouchEvents = true
+            }
         }
     }
 
