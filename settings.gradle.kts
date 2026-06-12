@@ -19,3 +19,5 @@ dependencyResolutionManagement {
 
 include(":hints")
 include(":sample:composeApp")
+include(":sample:androidApp")
+
